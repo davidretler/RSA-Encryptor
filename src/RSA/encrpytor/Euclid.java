@@ -12,8 +12,15 @@ import java.util.Base64;
 import java.io.*;
 
 /**
+ * Driver for the RSA encryption class
+ * <p>
+ * Command line interface for generating 2048-bit RSA keys, encrypting messages,
+ * and decrpyting messages. Support for inputing a public key or retriving one's
+ * private key from a file. Support for encrpyting a large messagefile.
  *
- * @author David
+ * @author David Etler
+ * @author Chris Etler
+ *
  */
 public class Euclid {
 
