@@ -1,22 +1,22 @@
 /*
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ */
 package RSA.encrpytor;
 
 import java.lang.Math;
@@ -35,29 +35,6 @@ import java.math.BigInteger;
  */
 public class Euclidian {
 
-    /*public static void main(String[] args) {
-     Scanner numScan = new Scanner(System.in);
-     int a = 0;
-     int b = 0;
-     while (a == 0) {
-     System.out.print("Input first number: ");
-     try {
-     a = Integer.parseInt(numScan.next());
-     } catch (NumberFormatException error) {
-     System.out.println("That's not a number.");
-     }
-     }
-     while (b == 0) {
-     System.out.print("Input second number: ");
-     try {
-     b = Integer.parseInt(numScan.next());
-     } catch (NumberFormatException error) {
-     System.out.println("That's not a number.");
-     }
-     }
-
-     System.out.println("GCD: " + gcd(a, b) + "\ns: " + extendedEuclidan(a, b)[1] + "\nt: " + extendedEuclidan(a, b)[2]);
-     }*/
     /**
      * Euclidian Algorithm
      * <p>
@@ -131,6 +108,17 @@ public class Euclidian {
         return m;
     }
 
+    /**
+     * Extends Euclidian Algorithm - BigInteger edition
+     * <p>
+     * Returns s and t such that As+Bt=GCD(A,B) If GCD(A,B)==1, then s is the
+     * inverse of A mod B Used by the RSA algorithm to find the decryption key
+     *
+     * @param A number
+     * @param B modulus
+     * @return Array of numbers {a, s, t} where a is the GCD of A and B and s is
+     * the inverse of A mod B is a==1
+     */
     public static BigInteger[] extendedEuclidan(BigInteger A, BigInteger B) {
         BigInteger a = A;
         BigInteger b = B;
@@ -158,7 +146,8 @@ public class Euclidian {
         BigInteger[] m = {a, s, t};
         return m;
     }
-
+    
+    //Not really needed anymore
     public static boolean isPrime(long n) {
         long sqrt = (long) Math.floor(Math.sqrt(n));
         for (long i = 2; i <= sqrt; i++) {
