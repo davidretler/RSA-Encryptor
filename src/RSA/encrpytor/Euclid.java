@@ -19,7 +19,6 @@
  */
 package RSA.encrpytor;
 
-import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.Scanner;
 import java.io.*;
@@ -28,8 +27,8 @@ import java.io.*;
  * Driver for the RSA encryption class
  * <p>
  * Command line interface for generating 2048-bit RSA keys, encrypting messages,
- * and decrpyting messages. Support for inputing a public key or retriving one's
- * private key from a file. Support for encrpyting a large messagefile.
+ * and decrypting messages. Support for inputing a public key or retrieving one's
+ * private key from a file. Support for encrypting a large messagefile.
  *
  * @author David Etler
  * @author Chris Etler
