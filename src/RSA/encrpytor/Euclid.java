@@ -27,14 +27,18 @@ import java.io.*;
  * Driver for the RSA encryption class
  * <p>
  * Command line interface for generating 2048-bit RSA keys, encrypting messages,
- * and decrypting messages. Support for inputing a public key or retrieving one's
- * public/private keys from a file. Support for encrypting a large messagefile.
+ * and decrypting messages. Support for inputing a public key or retrieving
+ * one's public/private keys from a file. Support for encrypting a large
+ * messagefile.
+ * <p>
+ * Keys are stored in "key.txt" and messages in "message.txt". Both in the same
+ * directory as the program.
+ *
  *
  * @author David Etler
  * @author Chris Etler
  *
  */
-
 public class Euclid {
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, IOException {
@@ -188,7 +192,7 @@ public class Euclid {
                     C = RSA.encrypt(messageText, e, pq);
                     messageWriter = new PrintWriter(messageFile);
                     messageWriter.println(C.toString(RADIX));
-                    System.out.println(textConverter.toString(C));
+                    //System.out.println(textConverter.toString(C));
                     //messageWriter.println(textConverter.toString(C));
                     System.out.println("Encrypted message written.");
                     messageWriter.close();
