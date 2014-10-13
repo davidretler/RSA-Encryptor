@@ -28,12 +28,13 @@ import java.io.*;
  * <p>
  * Command line interface for generating 2048-bit RSA keys, encrypting messages,
  * and decrypting messages. Support for inputing a public key or retrieving one's
- * private key from a file. Support for encrypting a large messagefile.
+ * public/private keys from a file. Support for encrypting a large messagefile.
  *
  * @author David Etler
  * @author Chris Etler
  *
  */
+
 public class Euclid {
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, IOException {
@@ -47,14 +48,10 @@ public class Euclid {
         String option = "";
         BigInteger e = BigInteger.valueOf(65537);
         BigInteger[] key;
-        BigInteger p;
-        BigInteger q;
         BigInteger pq;
         BigInteger d;
-        BigInteger value;
         BigInteger M;
         BigInteger C;
-        BigInteger Mn;
         String messageText;
         final int RADIX = Character.MAX_RADIX;
         Message textConverter = new Message();
@@ -191,6 +188,8 @@ public class Euclid {
                     C = RSA.encrypt(messageText, e, pq);
                     messageWriter = new PrintWriter(messageFile);
                     messageWriter.println(C.toString(RADIX));
+                    System.out.println(textConverter.toString(C));
+                    //messageWriter.println(textConverter.toString(C));
                     System.out.println("Encrypted message written.");
                     messageWriter.close();
                     break;
