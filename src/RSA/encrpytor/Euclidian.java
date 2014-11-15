@@ -33,7 +33,7 @@ import java.math.BigInteger;
  *
  * @since 2014-Oct-11
  */
-public class Euclidian {
+public final class Euclidian {
 
     /**
      * Euclidian Algorithm

@@ -72,7 +72,7 @@ public class Euclid {
                 + "dm -\tDecypt the message file with the key file\n"
                 + "rm -\tRead the message file";
 
-        System.out.println("TopSEEKRUT Encyptor v3.14159");
+        System.out.println("RSA Message Ecnryption/Decryption Shell -- 'o' for options.");
         //Print options
         System.out.println(COMMANDS);
         //Key going until user wants to quit
@@ -194,6 +194,8 @@ public class Euclid {
                     messageWriter.println(C.toString(RADIX));
                     //System.out.println(textConverter.toString(C));
                     //messageWriter.println(textConverter.toString(C));
+                    //System.out.println(C.toString());
+                    //System.out.println(textConverter.toInt(textConverter.toString(C)));
                     System.out.println("Encrypted message written.");
                     messageWriter.close();
                     break;
@@ -207,6 +209,8 @@ public class Euclid {
                     d = new BigInteger(keyReader.readLine(), RADIX);
                     keyReader.close();
                     C = new BigInteger(messageText, RADIX);
+                    //C = textConverter.toInt(messageText);
+                    //System.out.println(C.toString());
                     M = RSA.decrypt(C, d, pq);
                     messageWriter = new PrintWriter(messageFile);
                     messageWriter.println(textConverter.toString(M));

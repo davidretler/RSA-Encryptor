@@ -33,7 +33,7 @@ import java.util.Random;
  * @author Chris Etler
  *
  */
-public class RSA {
+public final class RSA {
 
     /**
      * Message class to convert text to integer representation and back.

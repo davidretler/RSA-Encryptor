@@ -26,6 +26,7 @@ public class Alphabet {
     public Alphabet(){
     //constructs the array of letters. We will use both capital and lower case, and some basic punctuation.
         length = 95;
+        //length = 99;
         alphabet = new char[length];
         
         //Defines the first 26 characters in the Array to be A,B,C,...,Z
@@ -57,6 +58,7 @@ public class Alphabet {
    
         
         //Defines the 67th to 77th
+        //Numbers 0-9
         startPos= (int)'1';
         alphabet[66] = '0';
         for (int i=67; i<76; i++){
@@ -82,6 +84,13 @@ public class Alphabet {
         alphabet[91] = '<';
         alphabet[92] = '>';
         alphabet[93] = '|';
+        //alphabet[94] = '€';
+        //alphabet[95] = 'ƒ';
+        //alphabet[96] = '†';
+        //alphabet[97] = '‡';
+        //alphabet[98] = 'Œ';
+        //alphabet[99] = 'Ž';
+                
         //Create a space. If the character isn't any of those, just make it whitespace.
         alphabet[length-1]=' ';
         
