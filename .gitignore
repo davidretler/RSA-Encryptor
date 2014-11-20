@@ -1,0 +1,7 @@
+/nbproject/private/
+/build/
+
+
+**/*.xml
+**/*.mf
+**/*.properties

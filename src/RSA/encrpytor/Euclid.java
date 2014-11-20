@@ -43,21 +43,31 @@ public class Euclid {
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, IOException {
         Scanner scan = new Scanner(System.in);
+        //File to say the key
         File keyFile = new File("key.txt");
         BufferedReader keyReader;
         PrintWriter keyWriter;
+        //File to save the message
         File messageFile = new File("message.txt");
         BufferedReader messageReader;
         PrintWriter messageWriter;
         String option = "";
-        BigInteger e = BigInteger.valueOf(65537);
+        //Value to use as public exponent
+        BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
         BigInteger[] key;
+        //To store public key
         BigInteger pq;
+        //To store pivate key
         BigInteger d;
+        //To store plaintxt as integer
         BigInteger M;
+        //To store cyphertext as intger
         BigInteger C;
+        //Message paintext as string
         String messageText;
+        //To convert to and from chareter represntation of integers
         final int RADIX = Character.MAX_RADIX;
+        //Convert string to and from integer
         Message textConverter = new Message();
         final String COMMANDS = "e  -\tEncrypt\n"
                 + "d  -\tDecrypt\n"

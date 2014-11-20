@@ -114,7 +114,7 @@ public final class RSA {
      */
     public static BigInteger decryptionKey(BigInteger p, BigInteger q) {
         BigInteger v = p.subtract(BigInteger.valueOf(1)).multiply(q.subtract(BigInteger.valueOf(1)));
-        BigInteger d = Euclidian.extendedEuclidan(BigInteger.valueOf(65537), v)[1];
+        BigInteger d = Euclidian.extendedEuclidan(BigInteger.valueOf((1<<(1 << 4)) + 1), v)[1];
         if (d.compareTo(BigInteger.valueOf(0)) < 0) {
             d = d.add(v);
         }
