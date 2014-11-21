@@ -25,7 +25,7 @@ public class Alphabet {
     
     public Alphabet(){
     //constructs the array of letters. We will use both capital and lower case, and some basic punctuation.
-        length = 95;
+        length = 100;
         //length = 99;
         alphabet = new char[length];
         
@@ -84,12 +84,12 @@ public class Alphabet {
         alphabet[91] = '<';
         alphabet[92] = '>';
         alphabet[93] = '|';
-        //alphabet[94] = '€';
-        //alphabet[95] = 'ƒ';
-        //alphabet[96] = '†';
-        //alphabet[97] = '‡';
-        //alphabet[98] = 'Œ';
-        //alphabet[99] = 'Ž';
+        alphabet[94] = 'ウ';
+        alphabet[95] = 'ー';
+        alphabet[96] = 'ん';
+        alphabet[97] = '置';
+        alphabet[98] = 'み';
+        alphabet[99] = 'の';
                 
         //Create a space. If the character isn't any of those, just make it whitespace.
         alphabet[length-1]=' ';

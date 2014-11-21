@@ -81,6 +81,7 @@ public class Euclid {
                 + "em -\tEncrypt the message file with the key file\n"
                 + "dm -\tDecypt the message file with the key file\n"
                 + "rm -\tRead the message file";
+                
 
         System.out.println("RSA Message Ecnryption/Decryption Shell -- 'o' for options.");
         //Print options
@@ -90,6 +91,7 @@ public class Euclid {
             System.out.print("Option: ");
             option = scan.next();
             scan.nextLine();
+            option = option.toLowerCase();
             switch (option) {
                 case "q":
                     //Closes the program
@@ -104,6 +106,7 @@ public class Euclid {
                     //Product of numbers is public key
                     //Modular inverse of e to the product is the private key
                     //Encrpytion relies on the modular inverse being hard to find
+                    System.out.println("Generating keys...");
                     keyWriter = new PrintWriter(keyFile, "UTF-8");
                     key = RSA.generateKey();
                     pq = key[0];
@@ -113,7 +116,7 @@ public class Euclid {
                     keyWriter.println(pq.toString(RADIX));
                     keyWriter.println(d.toString(RADIX));
                     keyWriter.close();
-                    System.out.println("Key written to file");
+                    System.out.println("Keys generated and saved to file.");
                     break;
                 case "e":
                     //Prompts the user for the public key
@@ -227,8 +230,10 @@ public class Euclid {
                     System.out.println("Decrypted message written.");
                     messageWriter.close();
                     break;
+                
+                    
                 default:
-                    System.out.println("Command not found. \'o\' for options.");
+                    System.out.println("Command '"+option+"' not found. \'o\' for options.");
                     break;
             }
         }
