@@ -6,3 +6,8 @@
 **/*.mf
 **/*.properties
 **/*.txt
+**/*.aux
+**/*.log
+**/*.bib
+**/*.bbl
+**/*.gz
