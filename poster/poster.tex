@@ -37,8 +37,8 @@ colspacing=1em, % Column spacing
 bgColorOne=white, % Background color for the gradient on the left side of the poster
 bgColorTwo=white, % Background color for the gradient on the right side of the poster
 borderColor=lightblue, % Border color
-headerColorOne=blue, % Background color for the header in the content boxes (left side)
-headerColorTwo=lightblue, % Background color for the header in the content boxes (right side)
+headerColorOne=white, % Background color for the header in the content boxes (left side)
+headerColorTwo=white, % Background color for the header in the content boxes (right side)
 headerFontColor=black, % Text color for the header text in the content boxes
 boxColorOne=white, % Background color of the content boxes
 textborder=roundedleft, % Format of the border around content boxes, can be: none, bars, coils, triangles, rectangle, rounded, roundedsmall, roundedright or faded
@@ -47,6 +47,7 @@ headerheight=0.1\textheight, % Height of the header
 headershape=roundedright, % Specify the rounded corner in the content box headers, can be: rectangle, small-rounded, roundedright, roundedleft or rounded
 headerfont=\Large\bf\textsc, % Large, bold and sans serif font in the headers of content boxes
 %textfont={\setlength{\parindent}{1.5em}}, % Uncomment for paragraph indentation
+columns =5,
 linewidth=2pt % Width of the border lines around content boxes
 }
 %----------------------------------------------------------------------------------------
@@ -59,7 +60,7 @@ linewidth=2pt % Width of the border lines around content boxes
 {\includegraphics[height=8em]{occ.png}} % Second university/lab logo on the right
 
 %----------------------------------------------------------------------------------------
-%	OBJECTIVES
+%	OBJECTIVES (0)
 %----------------------------------------------------------------------------------------
 
 \begin{posterbox}[name=objectives,column=0,row=0]{Objectives}
@@ -77,7 +78,7 @@ The objective of this prject was to implement the RSA encryption scheme in Java.
 \end{posterbox}
 
 %----------------------------------------------------------------------------------------
-%	INTRODUCTION
+%	INTRODUCTION (0)
 %----------------------------------------------------------------------------------------
 
 \begin{posterbox}[name=intro,column=0,below=objectives]{Introduction}
@@ -101,41 +102,39 @@ There are a few technical considerations that must be taken into account to full
 
 
 %----------------------------------------------------------------------------------------
-%	RSA ALGORITHM CODE
+%	RSA ALGORITHM CODE (3)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=code,column=2,span=2,row=0]{RSA Algorithm Code}
+\begin{posterbox}[name=code,column=3,span=2,row=0]{RSA Algorithm Code}
 
 \begin{verbatim}
 public final class RSA {
 
-    static final Message textConverter = new Message();
+  static final Message textConverter = new Message();
 
-    public static BigInteger encrypt(String M, BigInteger e, BigInteger pq) {
-        BigInteger Mn = textConverter.toInt(M);
-        return encrypt(Mn, e, pq);
-    }
-    public static BigInteger decrypt(String C, BigInteger d, BigInteger pq) {
-        BigInteger Cn = textConverter.toInt(C);
-        return encrypt(Cn, d, pq);
-    }
-
-    public static BigInteger[] generateKey() {
-        Random rand = new Random();
-        BigInteger p = BigInteger.probablePrime(2048, rand);
-        BigInteger q = BigInteger.probablePrime(2048, rand);
-        BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
-        return key;
-    }
-
-    public static BigInteger decryptionKey(BigInteger p, BigInteger q) {
-        BigInteger v = p.subtract(BigInteger.valueOf(1)).multiply(q.subtract(BigInteger.valueOf(1)));
-        BigInteger d = Euclidean.extendedEuclidean(BigInteger.valueOf((1<<(1 << 4)) + 1), v)[1];
-        if (d.compareTo(BigInteger.valueOf(0)) < 0) {
-            d = d.add(v);
-        }
-        return d;
-    }
+  public static BigInteger encrypt(String M, BigInteger e, BigInteger pq) {
+      BigInteger Mn = textConverter.toInt(M);
+      return encrypt(Mn, e, pq);
+  }
+  public static BigInteger decrypt(String C, BigInteger d, BigInteger pq) {
+      BigInteger Cn = textConverter.toInt(C);
+      return encrypt(Cn, d, pq);
+  }
+  public static BigInteger[] generateKey() {
+      Random rand = new Random();
+      BigInteger p = BigInteger.probablePrime(2048, rand);
+      BigInteger q = BigInteger.probablePrime(2048, rand);
+      BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
+      return key;
+  }
+  public static BigInteger decryptionKey(BigInteger p, BigInteger q) {
+      BigInteger v = p.subtract(BigInteger.valueOf(1)).multiply(q.subtract(BigInteger.valueOf(1)));
+      BigInteger d = Euclidean.extendedEuclidean(BigInteger.valueOf((1<<(1 << 4)) + 1), v)[1];
+      if (d.compareTo(BigInteger.valueOf(0)) < 0) {
+          d = d.add(v);
+      }
+      return d;
+  }
 }
 
 public class Euclidean {
@@ -167,37 +166,24 @@ public class Euclidean {
 
 
 
-%----------------------------------------------------------------------------------------
-%	MESSAGE PADDING
-%----------------------------------------------------------------------------------------
-
-\begin{posterbox}[name=padding, column=0, below=intro]{Message Padding}
-In order to represent message plaintext as an integer for encryption, a \emph{padding scheme} was necessary. Our padding scheme encodes an symbol set of 10 characters as numbers between 00-99. A message is simply a series of these number combinations terminating with a single three-digit number that encodes the length of the message, so that leading zeros aren't lost.
-\end{posterbox}
 
 
 %----------------------------------------------------------------------------------------
-%	CONCLUSION
+%	CONCLUSION (3.0)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=conclusion, column=2, below=code]{Conclusion} 
+\begin{posterbox}[name=conclusion, column=3, below=code]{Conclusion} 
 This project served as great learning experience. Understanding and implementing the RSA algorithm is simple enough to be accessible to a student at a community college, yet ubiquitous and powerful enough to make a valuable chuck of knowledge. The implementation here is not complete, however. In practice a better padding scheme which adds entropy to the message is necessary to thwart attempts to decipher messages by accumulating a codex. Further, messaged signing by a second set of keys is common in practice to ensure that all messages were sent by the proper party. Any legitimate software application would be better off utilizing well-used RSA libraries which have been tested by many. However, for a hobby project, this program has been very useful to help understand the inner workings of the RSA algorithm.
 \end{posterbox}
 
-%----------------------------------------------------------------------------------------
-%	ACKNOWLAGEMENTS 
-%----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=conclusion, column=3, below=code]{Acknowledgments} 
-We would like to thank Prof. Pezzimenti for his support in this project. We would also like to thanks as our parents for providing room and board pro bono while we conduct our studies. Further we would like to thanks Linus Torvalds for writing Git and the creators of NetBeans because they're seriously useful tools for development of applications in Java. Finally we'd like to thank Donald Knuth for writing \LaTeX and Brian Amberg for creating \verb|baposter|, the library through which this poster was rendered.
-\end{posterbox}
 
 
 %----------------------------------------------------------------------------------------
-%	RSA ALGORITHM
+%	RSA ALGORITHM (1)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=rsa,column=1,row=0]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
+\begin{posterbox}[name=rsa,column=1,row=0,span=2]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
 
 The RSA algorithm works by generating two keys: a public and a private key. In reality, these keys are simply very long prime numbers. The security of the algorithm depends completely on the length of these numbers. In the past, numbers as low as 768-bit have been used, but modern practices call for no lower than 1024-bit; some implementations use as high as 4096-bit keys. For this implementation we decided to use 2048-bit keys, which would mean prime numbers on the order of $2^{2048}$.
 
@@ -219,9 +205,9 @@ Further, RSA derives strength from how simple it is to calculate the modular inv
 %----------------------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------------------
-%   HISTORY OF RSA
+%   HISTORY OF RSA (1)   
 %----------------------------------------------------------------------------------------
-\begin{posterbox}[name=history, column=1, below=rsa]{History}
+\begin{posterbox}[name=history, column=1, below=rsa,span=2]{History}
 RSA was first described publicly in 1977 by a trio of MIT mathematicians named Ron \textbf{R}ivest, Adi \textbf{S}hamir, and Leonard \textbf{A}dleman, after whom the algorithm is named. Prior to that the algorithm was used internally by the UK intelligence agency GCHQ, where it was discovered independently by Clifford Cocks. Despite having been discovered 4 years earlier, the algorithm is attributed to the MIT trio for their work being the first published for the general public.
 
 \begin{center}
@@ -231,6 +217,22 @@ RSA was first described publicly in 1977 by a trio of MIT mathematicians named R
 
 
 Today, RSA is ubiquitous in many areas if security, mainly due to its simplicity and security. It is secure enough to be used by government espionage, yet easy enough to be implemented by amateurs. 
+\end{posterbox}
+
+%----------------------------------------------------------------------------------------
+%	MESSAGE PADDING (0)
+%----------------------------------------------------------------------------------------
+
+\begin{posterbox}[name=padding, column=4, below=code]{Message Padding}
+In order to represent message plaintext as an integer for encryption, a \emph{padding scheme} was necessary. Our padding scheme encodes an symbol set of 10 characters as numbers between 00-99. A message is simply a series of these number combinations terminating with a single three-digit number that encodes the length of the message, so that leading zeros aren't lost.
+\end{posterbox}
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLAGEMENTS (3.1)
+%----------------------------------------------------------------------------------------
+
+\begin{posterbox}[name=conclusion, column=4, below=padding]{Acknowledgments} 
+We would like to thank Prof. Pezzimenti for his support in this project. We would also like to thanks as our parents for providing room and board pro bono while we conduct our studies. Further we would like to thanks Linus Torvalds for writing Git and the creators of NetBeans because they're seriously useful tools for development of applications in Java. Finally we'd like to thank Donald Knuth for writing \LaTeX and Brian Amberg for creating \verb|baposter|, the library through which this poster was rendered.
 \end{posterbox}
 
 \end{poster}
