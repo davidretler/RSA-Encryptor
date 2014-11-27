@@ -66,7 +66,7 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \begin{posterbox}[name=objectives,column=0,row=0,span=13]{Objectives}
 
-The objective of this prject was to implement the RSA encryption scheme in Java. We provide the following deliverables to exhibit knowledge of RSA and public key cryptograhpy:
+The objective of this project was to implement the RSA encryption scheme in Java. We provide the following deliverables to exhibit knowledge of RSA and public key cryptography:
 
 \begin{enumerate}\compresslist
 \item Generation of 4096-bit RSA keys
@@ -97,16 +97,12 @@ High level, the system works thus:
 	\item Alice also has her own padlock which can be used by Bob to send a message back to her.
 \end{enumerate}
 
-There are a few technical considerations that must be taken into account to fully understand the significance of RSA. For one, we must develop a mathematical "padlock" in order to send messages abstractly rather than with physical padlocks. We will refer to these abstract padlocks as \emph{public keys} and the keys used to unlock them as \emph{private keys}, and both together as a \emph{key pair}. Key pairs must be generated algorithmically and keys must be complex enough such that the lock can't be "picked" by Eve. The solutions to these technical hurdles as well as the inner workings of the RSA algorithm are presented in the section on the RSA algorithm.
+\begin{center}
+\includegraphics[width=.5\linewidth]{xkcd.png}
+	\captionof*{figure}{Source: XKCD}
+\end{center}
+
 \end{posterbox}
-
-
-
-
-
-
-
-
 
 %----------------------------------------------------------------------------------------
 %	RSA ALGORITHM (1)
@@ -114,12 +110,14 @@ There are a few technical considerations that must be taken into account to full
 
 \begin{posterbox}[name=rsa,column=13,row=0,span=17]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
 
-The RSA algorithm works by generating two keys: a public and a private key. In reality, these keys are simply very long prime numbers. The security of the algorithm depends completely on the length of these numbers. In the past, numbers as low as 768-bit have been used, but modern practices call for no lower than 1024-bit; some implementations use as high as 4096-bit keys. For this implementation we decided to use 2048-bit keys, which would mean prime numbers on the order of $2^{2048}$.
+There are a few technical considerations that must be taken into account to fully understand the significance of RSA. For one, we must develop a mathematical "padlock" in order to send messages abstractly rather than with physical padlocks. We will refer to these abstract padlocks as \emph{public keys} and the keys used to unlock them as \emph{private keys}, and both together as a \emph{key pair}. Key pairs must be generated algorithmically and keys must be complex enough such that the lock can't be "picked" by Eve.
+
+The RSA algorithm works by generating two keys: a public and a private key. In reality, these keys are simply very long numbers. The security of the algorithm depends completely on the length of these numbers. In the past, numbers as low as 768-bit have been used, but modern practices call for no lower than 1024-bit; some implementations use as high as 4096-bit keys. For this implementation we decided to use 4096-bit keys, which would mean numbers on the order of $2^{4096}$.
 
 The algorithm works as such:
 \begin{enumerate}
-	\item First, two prime numbers $p$ and $q$ are chosen. These two numbers together are used to form the public key. Specifically, the public key is ${pq = p * q}$. Both $p$ and $q$ should be of the same bit-length for security, so for a 2048-bit key, we chose to use 1024-bit prime numbers. 
-	\item A number $e$ is chosen and agreed upon by all using the algorithm. This is called the public exponent and the standard is $e = 65537$, though in practice any number mutually prime with ${(p-1)(q-1)}$ is usable. $65537$ is chosen as it's a prime number and is equal to ${2^{2^4}+1 = 1 \ll (1 \ll 4) + 1}$, which can be easily calculated by a computer.
+	\item First, two prime numbers $p$ and $q$ are chosen. These two numbers together are used to form the public key. Specifically, the public key is ${pq = p * q}$. Both $p$ and $q$ should be of the same bit-length for security, so for a 4096-bit key, we chose to use 2048-bit prime numbers. 
+	\item A number $e$ is chosen and agreed upon by all using the algorithm. This is called the public exponent and the standard is $e = 65537$, though in practice any number mutually prime with ${(p-1)(q-1)}$ is usable. $65537$ is chosen as it's a prime number and is equal to ${2^{16}+1 = (1 \ll 16) + 1}$, which can be easily calculated by a computer.
 	\item The private key $d$ is found by taking the \emph{modular inverse} of $e$ mod ${(p-1)*(q-1)}$. In our program, this number if found via the \emph{extended Euclidean algorithm}.
 	\item A message is chosen and represented as an integer called $M$.
 	\item From the message, a cypher-text $C$ is generated. $C = M^e\ mod\ pq$.
@@ -128,7 +126,7 @@ The algorithm works as such:
 
 The algorithm derives strength from  a few different factors. First, it is very difficult to factor a large number into it's component primes. When a RSA public key is generated, two small prime numbers are generated separately and then multiplied by each-other to calculate the public key. It is easy for a computer to perform this task, taking mere seconds on even an antiquated laptop. However, such cannot be said about finding the two primes that make the public key given just the key itself. Even a modern supercomputer would be incapable of such a feat, even on the time-scale a years.
 
-Further, RSA derives strength from how simple it is to calculate the modular inverse of $e\ mod\ pq$ given just $(p-1)(q-1)$. This process is done via the extended Euclidean algorithm. The algorithm will always calculate the inverse of \verb|A| mod \verb|B| so long as one exists. The output are numbers $a$, $s$, and $t$ such that $a = GCD(A,B)$ and $A*s + B*t = a$. The second output, $s$, is the RSA decryption key when $A=e$ and ${B=(p-1)(q-1)}$. This can be calculated efficiently when $p$ and $q$ are originally known; however, finding this with only knowledge of the public key $pq$ is a monumental task, making RSA extremely secure.  
+Further, RSA derives strength from how simple it is to calculate the modular inverse of $e$ mod $pq$ given just $(p-1)(q-1)$. This process is done via the extended Euclidean algorithm. The algorithm will always calculate the inverse of \verb|A| mod \verb|B| so long as one exists. The output are numbers $a$, $s$, and $t$ such that $a = GCD(A,B)$ and $A*s + B*t = a$. The second output, $s$, is the RSA decryption key when $A=e$ and ${B=(p-1)(q-1)}$. This can be calculated efficiently when $p$ and $q$ are originally known; however, finding this with only knowledge of the public key $pq$ is a monumental task, making RSA extremely secure.  
 \end{posterbox}
 
 %----------------------------------------------------------------------------------------
@@ -156,20 +154,22 @@ Today, RSA is ubiquitous in many areas if security, mainly due to its simplicity
 %	RSA ALGORITHM CODE (3)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=code,column=30,span=28,row=0]{RSA Algorithm Code}
+\begin{posterbox}[name=code,column=30,span=28,row=0]{RSA Algorithm Code (Excerpt)}
 
 {\begin{verbatim}
 public final class RSA {
 
-static final Message textConverter = new Message();
+    static final Message textConverter = new Message();
 
     public static BigInteger encrypt(String M, BigInteger e, BigInteger pq) {
         BigInteger Mn = textConverter.toInt(M);
-        return encrypt(Mn, e, pq);
+        BigInteger C = M.modPow(e, pq);        
+        return C;
     }
     public static BigInteger decrypt(String C, BigInteger d, BigInteger pq) {
         BigInteger Cn = textConverter.toInt(C);
-        return encrypt(Cn, d, pq);
+        BigInteger M = C.modPow(d, pq);
+        return M;
     }
     public static BigInteger[] generateKey() {
         Random rand = new Random();
@@ -191,7 +191,7 @@ static final Message textConverter = new Message();
 public class Euclidean {
     public long[] extendedEuclidean(long A, long B) {
         long a = A, b = B, s = 1, t = 0;
-        long u = 0, v = 1, r = 0, q = 0, nu, nv;\\
+        long u = 0, v = 1, r = 0, q = 0, nu, nv;
         while (b != 0) {
             r = a % b;
             q = (long) Math.floor(a / b);
@@ -230,7 +230,7 @@ This project served as great learning experience. Understanding and implementing
 %----------------------------------------------------------------------------------------
 
 \begin{posterbox}[name=padding, column=44, below=code, span=14]{Message Padding}
-In order to represent message plaintext as an integer for encryption, a \emph{padding scheme} was necessary. Our padding scheme encodes an symbol set of 10 characters as numbers between 00-99. A message is simply a series of these number combinations terminating with a single three-digit number that encodes the length of the message, so that leading zeros aren't lost.
+In order to represent message plaintext as an integer for encryption, a \emph{padding scheme} was necessary. Our padding scheme encodes an symbol set of 100 characters as numbers between 00-99. A message is simply a series of these number combinations terminating with a single three-digit number that encodes the length of the message, so that leading zeros aren't lost.
 \end{posterbox}
 
 

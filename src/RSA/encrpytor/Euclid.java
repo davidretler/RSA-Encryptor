@@ -53,7 +53,7 @@ public class Euclid {
         PrintWriter messageWriter;
         String option = "";
         //Value to use as public exponent
-        BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
+        BigInteger e = BigInteger.valueOf((1 << 16) + 1);
         BigInteger[] key;
         //To store public key
         BigInteger pq;
