@@ -68,6 +68,9 @@ public class Euclid {
         //To convert to and from chareter represntation of integers
         final int RADIX = Character.MAX_RADIX;
         //Convert string to and from integer
+        
+        rsaGUI gui = new rsaGUI();
+        gui.setVisible(true);
         Message textConverter = new Message();
         final String COMMANDS = "e  -\tEncrypt\n"
                 + "d  -\tDecrypt\n"

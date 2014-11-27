@@ -5,12 +5,22 @@
  */
 package RSA.encrpytor;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.math.BigInteger;
+
+
 /**
  *
  * @author Chris
  */
 public class rsaGUI extends javax.swing.JFrame {
 
+    private RSA myRSA = new RSA();
+    private BigInteger[] keys = new BigInteger[2];
+    private final int RADIX = Character.MAX_RADIX;
+    private BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
+    private Message messageConv = new Message();
     /**
      * Creates new form rsaGUI
      */
@@ -67,11 +77,13 @@ public class rsaGUI extends javax.swing.JFrame {
         outputLabel.setText("Output:");
 
         messageTextArea.setColumns(20);
+        messageTextArea.setLineWrap(true);
         messageTextArea.setRows(5);
         jScrollPane1.setViewportView(messageTextArea);
 
         outputTextArea.setEditable(false);
         outputTextArea.setColumns(20);
+        outputTextArea.setLineWrap(true);
         outputTextArea.setRows(5);
         jScrollPane2.setViewportView(outputTextArea);
 
@@ -96,11 +108,13 @@ public class rsaGUI extends javax.swing.JFrame {
 
         publicKeyTextArea.setEditable(false);
         publicKeyTextArea.setColumns(20);
+        publicKeyTextArea.setLineWrap(true);
         publicKeyTextArea.setRows(4);
         jScrollPane3.setViewportView(publicKeyTextArea);
 
         privateKeyTextArea.setEditable(false);
         privateKeyTextArea.setColumns(20);
+        privateKeyTextArea.setLineWrap(true);
         privateKeyTextArea.setRows(4);
         jScrollPane4.setViewportView(privateKeyTextArea);
 
@@ -156,7 +170,7 @@ public class rsaGUI extends javax.swing.JFrame {
                     .addComponent(keysLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -165,18 +179,18 @@ public class rsaGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(outputLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(publicKeyLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(privateKeyLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(keyButton)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -184,14 +198,28 @@ public class rsaGUI extends javax.swing.JFrame {
 
     private void encryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptButtonActionPerformed
         // TODO add your handling code here:
+        String text = messageTextArea.getText();
+        BigInteger textInt = messageConv.toInt(text);
+        textInt = RSA.encrypt(textInt, e, keys[0]);
+        text = textInt.toString(RADIX);
+        outputTextArea.setText(text);
+        
+        
     }//GEN-LAST:event_encryptButtonActionPerformed
 
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
-        // TODO add your handling code here:
+        String text = messageTextArea.getText();
+        BigInteger textInt = new BigInteger(text,RADIX);
+        textInt = RSA.decrypt(textInt, keys[1], keys[0]);
+        text = messageConv.toString(textInt);
+        outputTextArea.setText(text);
     }//GEN-LAST:event_decryptButtonActionPerformed
 
     private void keyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyButtonActionPerformed
         // TODO add your handling code here:
+        keys = myRSA.generateKey();
+        publicKeyTextArea.setText(keys[0].toString(RADIX));
+        privateKeyTextArea.setText(keys[1].toString(RADIX));
     }//GEN-LAST:event_keyButtonActionPerformed
 
     /**
