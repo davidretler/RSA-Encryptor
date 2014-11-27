@@ -84,7 +84,7 @@ public class Alphabet {
         alphabet[91] = '<';
         alphabet[92] = '>';
         alphabet[93] = '|';
-        alphabet[94] = 'ウ';
+        alphabet[94] = '\n';
         alphabet[95] = 'ー';
         alphabet[96] = 'ん';
         alphabet[97] = '置';
@@ -102,7 +102,7 @@ public class Alphabet {
     
     //return integer value of character based on Alphabet class. If character not found return 76, the value for space
     public int getInt(char myChar){
-        int output = length;
+        int output = length-1;
         for (int i=0; i<length; i++){
             if (myChar == alphabet[i]) output=i;
         }
