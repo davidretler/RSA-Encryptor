@@ -85,7 +85,7 @@ public class Alphabet {
         alphabet[92] = '>';
         alphabet[93] = '|';
         alphabet[94] = '\n';
-        alphabet[95] = 'ー';
+        alphabet[95] = '\t';
         alphabet[96] = 'ん';
         alphabet[97] = '置';
         alphabet[98] = 'み';
