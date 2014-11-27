@@ -1,4 +1,5 @@
-\documentclass[landscape,a0paper,fontscale=.46]{baposter} % Adjust the font scale/size here
+\documentclass[landscape,fontscale=.4,paperwidth=48in,paperheight=36in]{baposter} % Adjust the font scale/size here
+
 
 \usepackage{graphicx} % Required for including images
 \graphicspath{{figures/}} % Directory in which figures are stored
@@ -47,7 +48,7 @@ headerheight=0.1\textheight, % Height of the header
 headershape=roundedright, % Specify the rounded corner in the content box headers, can be: rectangle, small-rounded, roundedright, roundedleft or rounded
 headerfont=\Large\bf\textsc, % Large, bold and sans serif font in the headers of content boxes
 %textfont={\setlength{\parindent}{1.5em}}, % Uncomment for paragraph indentation
-columns =5,
+columns =2,
 linewidth=2pt % Width of the border lines around content boxes
 }
 %----------------------------------------------------------------------------------------
@@ -63,7 +64,7 @@ linewidth=2pt % Width of the border lines around content boxes
 %	OBJECTIVES (0)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=objectives,column=0,row=0]{Objectives}
+\begin{posterbox}[name=objectives,column=0,row=0,span=13]{Objectives}
 
 The objective of this prject was to implement the RSA encryption scheme in Java. We provide the following deliverables to exhibit knowledge of RSA and public key cryptograhpy:
 
@@ -81,7 +82,7 @@ The objective of this prject was to implement the RSA encryption scheme in Java.
 %	INTRODUCTION (0)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=intro,column=0,below=objectives]{Introduction}
+\begin{posterbox}[name=intro,column=0,below=objectives, span=13]{Introduction}
 
 RSA cryptography is a industry-standard algorithm that implements public key cryptography in a simple yet extremely powerful way. Public key cryptography is a system which allows two parties to contact one another without and fear of interception, for if the message were to be intercepted it would mean nothing to to the interceptor. This sort of system is highly useful everywhere from espionage to online gaming, as it allows clients to communicate openly without fear of any signal interception and without ever needing to communicate a shared secret over a private channel.
 
@@ -105,42 +106,42 @@ There are a few technical considerations that must be taken into account to full
 %	RSA ALGORITHM CODE (3)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=code,column=3,span=2,row=0]{RSA Algorithm Code}
+\begin{posterbox}[name=code,column=31,span=27,row=0]{RSA Algorithm Code}
 
-\begin{verbatim}
+{\begin{verbatim}
 public final class RSA {
 
-  static final Message textConverter = new Message();
+static final Message textConverter = new Message();
 
-  public static BigInteger encrypt(String M, BigInteger e, BigInteger pq) {
-      BigInteger Mn = textConverter.toInt(M);
-      return encrypt(Mn, e, pq);
-  }
-  public static BigInteger decrypt(String C, BigInteger d, BigInteger pq) {
-      BigInteger Cn = textConverter.toInt(C);
-      return encrypt(Cn, d, pq);
-  }
-  public static BigInteger[] generateKey() {
-      Random rand = new Random();
-      BigInteger p = BigInteger.probablePrime(2048, rand);
-      BigInteger q = BigInteger.probablePrime(2048, rand);
-      BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
-      return key;
-  }
-  public static BigInteger decryptionKey(BigInteger p, BigInteger q) {
-      BigInteger v = p.subtract(BigInteger.valueOf(1)).multiply(q.subtract(BigInteger.valueOf(1)));
-      BigInteger d = Euclidean.extendedEuclidean(BigInteger.valueOf((1<<(1 << 4)) + 1), v)[1];
-      if (d.compareTo(BigInteger.valueOf(0)) < 0) {
-          d = d.add(v);
-      }
-      return d;
-  }
+    public static BigInteger encrypt(String M, BigInteger e, BigInteger pq) {
+        BigInteger Mn = textConverter.toInt(M);
+        return encrypt(Mn, e, pq);
+    }
+    public static BigInteger decrypt(String C, BigInteger d, BigInteger pq) {
+        BigInteger Cn = textConverter.toInt(C);
+        return encrypt(Cn, d, pq);
+    }
+    public static BigInteger[] generateKey() {
+        Random rand = new Random();
+        BigInteger p = BigInteger.probablePrime(2048, rand);
+        BigInteger q = BigInteger.probablePrime(2048, rand);
+        BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
+        return key;
+    }
+    public static BigInteger decryptionKey(BigInteger p, BigInteger q) {
+        BigInteger v = p.subtract(BigInteger.valueOf(1)).multiply(q.subtract(BigInteger.valueOf(1)));
+        BigInteger d = Euclidean.extendedEuclidean(BigInteger.valueOf((1<<(1 << 4)) + 1), v)[1];
+        if (d.compareTo(BigInteger.valueOf(0)) < 0) {
+            d = d.add(v);
+        }
+        return d;
+    }
 }
 
 public class Euclidean {
     public long[] extendedEuclidean(long A, long B) {
         long a = A, b = B, s = 1, t = 0;
-        long u = 0, v = 1, r = 0, q = 0, nu, nv;
+        long u = 0, v = 1, r = 0, q = 0, nu, nv;\\
         while (b != 0) {
             r = a % b;
             q = (long) Math.floor(a / b);
@@ -153,12 +154,11 @@ public class Euclidean {
             u = nu;
             v = nv;
         }
-        // gcd == a
         long[] m = {a, s, t};
         return m;
     }
 }
-\end{verbatim}
+\end{verbatim}}
 
 \end{posterbox}
 
@@ -168,13 +168,6 @@ public class Euclidean {
 
 
 
-%----------------------------------------------------------------------------------------
-%	CONCLUSION (3.0)
-%----------------------------------------------------------------------------------------
-
-\begin{posterbox}[name=conclusion, column=3, below=code]{Conclusion} 
-This project served as great learning experience. Understanding and implementing the RSA algorithm is simple enough to be accessible to a student at a community college, yet ubiquitous and powerful enough to make a valuable chuck of knowledge. The implementation here is not complete, however. In practice a better padding scheme which adds entropy to the message is necessary to thwart attempts to decipher messages by accumulating a codex. Further, messaged signing by a second set of keys is common in practice to ensure that all messages were sent by the proper party. Any legitimate software application would be better off utilizing well-used RSA libraries which have been tested by many. However, for a hobby project, this program has been very useful to help understand the inner workings of the RSA algorithm.
-\end{posterbox}
 
 
 
@@ -183,7 +176,7 @@ This project served as great learning experience. Understanding and implementing
 %	RSA ALGORITHM (1)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=rsa,column=1,row=0,span=2]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
+\begin{posterbox}[name=rsa,column=13,row=0,span=17]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
 
 The RSA algorithm works by generating two keys: a public and a private key. In reality, these keys are simply very long prime numbers. The security of the algorithm depends completely on the length of these numbers. In the past, numbers as low as 768-bit have been used, but modern practices call for no lower than 1024-bit; some implementations use as high as 4096-bit keys. For this implementation we decided to use 2048-bit keys, which would mean prime numbers on the order of $2^{2048}$.
 
@@ -207,31 +200,48 @@ Further, RSA derives strength from how simple it is to calculate the modular inv
 %----------------------------------------------------------------------------------------
 %   HISTORY OF RSA (1)   
 %----------------------------------------------------------------------------------------
-\begin{posterbox}[name=history, column=1, below=rsa,span=2]{History}
+
+\begin{posterbox}[name=history, column=13, below=rsa,span=17]{History}
+\begin{multicols}{2}
 RSA was first described publicly in 1977 by a trio of MIT mathematicians named Ron \textbf{R}ivest, Adi \textbf{S}hamir, and Leonard \textbf{A}dleman, after whom the algorithm is named. Prior to that the algorithm was used internally by the UK intelligence agency GCHQ, where it was discovered independently by Clifford Cocks. Despite having been discovered 4 years earlier, the algorithm is attributed to the MIT trio for their work being the first published for the general public.
 
+Today, RSA is ubiquitous in many areas if security, mainly due to its simplicity and security. It is secure enough to be used by government espionage, yet easy enough to be implemented by amateurs. 
+
 \begin{center}
-\includegraphics[width=0.8\linewidth]{RSA-2003.jpg}
+\includegraphics[width=1\linewidth]{RSA-2003.jpg}
 	\captionof*{figure}{Ron Rivest, Adi Shamir, Len Adleman in 2003}
 \end{center}
 
 
-Today, RSA is ubiquitous in many areas if security, mainly due to its simplicity and security. It is secure enough to be used by government espionage, yet easy enough to be implemented by amateurs. 
+
+
+\end{multicols}
 \end{posterbox}
 
 %----------------------------------------------------------------------------------------
-%	MESSAGE PADDING (0)
+%	CONCLUSION (3.0)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=padding, column=4, below=code]{Message Padding}
+\begin{posterbox}[name=conclusion, column=31, below=code, span=13]{Conclusion} 
+This project served as great learning experience. Understanding and implementing the RSA algorithm is simple enough to be accessible to a student at a community college, yet ubiquitous and powerful enough to make a valuable chuck of knowledge. The implementation here is not complete, however. In practice a better padding scheme which adds entropy to the message is necessary to thwart attempts to decipher messages by accumulating a codex. Further, messaged signing by a second set of keys is common in practice to ensure that all messages were sent by the proper party. Any legitimate software application would be better off utilizing well-used RSA libraries which have been tested by many. However, for a hobby project, this program has been very useful to help understand the inner workings of the RSA algorithm.
+\end{posterbox}
+
+
+%----------------------------------------------------------------------------------------
+%	MESSAGE PADDING (3.1)
+%----------------------------------------------------------------------------------------
+
+\begin{posterbox}[name=padding, column=44, below=code, span=14]{Message Padding}
 In order to represent message plaintext as an integer for encryption, a \emph{padding scheme} was necessary. Our padding scheme encodes an symbol set of 10 characters as numbers between 00-99. A message is simply a series of these number combinations terminating with a single three-digit number that encodes the length of the message, so that leading zeros aren't lost.
 \end{posterbox}
+
+
 
 %----------------------------------------------------------------------------------------
 %	ACKNOWLAGEMENTS (3.1)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=conclusion, column=4, below=padding]{Acknowledgments} 
+\begin{posterbox}[name=conclusion, column=44, below=padding, span=14]{Acknowledgments} 
 We would like to thank Prof. Pezzimenti for his support in this project. We would also like to thanks as our parents for providing room and board pro bono while we conduct our studies. Further we would like to thanks Linus Torvalds for writing Git and the creators of NetBeans because they're seriously useful tools for development of applications in Java. Finally we'd like to thank Donald Knuth for writing \LaTeX and Brian Amberg for creating \verb|baposter|, the library through which this poster was rendered.
 \end{posterbox}
 

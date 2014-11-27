@@ -799,7 +799,7 @@
   \or % 1
     \setlength{\colwidth}{\colwidth}%
   \or % 2
-    \setlength{\colwidth}{0.5\colwidth}%
+    \setlength{\colwidth}{0.01\colwidth}%
   \or % 3
     \setlength{\colwidth}{0.3333333333333\colwidth}%
   \or % 4
@@ -808,7 +808,9 @@
     \setlength{\colwidth}{0.2\colwidth}%
   \or % 6
     \setlength{\colwidth}{0.16666666666\colwidth}%
-  \else % >6
+  \or % 20
+    \setlength{\colwidth}{0.05\colwidth}%
+  \else % > 21
     \error{You do not want so many columns}
   \fi
 %
