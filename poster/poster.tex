@@ -69,8 +69,8 @@ linewidth=2pt % Width of the border lines around content boxes
 The objective of this prject was to implement the RSA encryption scheme in Java. We provide the following deliverables to exhibit knowledge of RSA and public key cryptograhpy:
 
 \begin{enumerate}\compresslist
-\item Generation of 2048 RSA keys
-\item Encryption of integers less than 2048 bits in length via RSA
+\item Generation of 4096-bit RSA keys
+\item Encryption of integers less than 4096 bits in length via RSA
 \item Conversion of plaintext to integer representation (\emph{padding scheme})
 \item A rudimentary shell for encryption of messages from files and reading of keys
 \end{enumerate}
@@ -102,11 +102,61 @@ There are a few technical considerations that must be taken into account to full
 
 
 
+
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	RSA ALGORITHM (1)
+%----------------------------------------------------------------------------------------
+
+\begin{posterbox}[name=rsa,column=13,row=0,span=17]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
+
+The RSA algorithm works by generating two keys: a public and a private key. In reality, these keys are simply very long prime numbers. The security of the algorithm depends completely on the length of these numbers. In the past, numbers as low as 768-bit have been used, but modern practices call for no lower than 1024-bit; some implementations use as high as 4096-bit keys. For this implementation we decided to use 2048-bit keys, which would mean prime numbers on the order of $2^{2048}$.
+
+The algorithm works as such:
+\begin{enumerate}
+	\item First, two prime numbers $p$ and $q$ are chosen. These two numbers together are used to form the public key. Specifically, the public key is ${pq = p * q}$. Both $p$ and $q$ should be of the same bit-length for security, so for a 2048-bit key, we chose to use 1024-bit prime numbers. 
+	\item A number $e$ is chosen and agreed upon by all using the algorithm. This is called the public exponent and the standard is $e = 65537$, though in practice any number mutually prime with ${(p-1)(q-1)}$ is usable. $65537$ is chosen as it's a prime number and is equal to ${2^{2^4}+1 = 1 \ll (1 \ll 4) + 1}$, which can be easily calculated by a computer.
+	\item The private key $d$ is found by taking the \emph{modular inverse} of $e$ mod ${(p-1)*(q-1)}$. In our program, this number if found via the \emph{extended Euclidean algorithm}.
+	\item A message is chosen and represented as an integer called $M$.
+	\item From the message, a cypher-text $C$ is generated. $C = M^e\ mod\ pq$.
+	\item The message is sent to the owner of the public key, who can decrypt the message using $M = C^d\ mod\ pq$.
+\end{enumerate}
+
+The algorithm derives strength from  a few different factors. First, it is very difficult to factor a large number into it's component primes. When a RSA public key is generated, two small prime numbers are generated separately and then multiplied by each-other to calculate the public key. It is easy for a computer to perform this task, taking mere seconds on even an antiquated laptop. However, such cannot be said about finding the two primes that make the public key given just the key itself. Even a modern supercomputer would be incapable of such a feat, even on the time-scale a years.
+
+Further, RSA derives strength from how simple it is to calculate the modular inverse of $e\ mod\ pq$ given just $(p-1)(q-1)$. This process is done via the extended Euclidean algorithm. The algorithm will always calculate the inverse of \verb|A| mod \verb|B| so long as one exists. The output are numbers $a$, $s$, and $t$ such that $a = GCD(A,B)$ and $A*s + B*t = a$. The second output, $s$, is the RSA decryption key when $A=e$ and ${B=(p-1)(q-1)}$. This can be calculated efficiently when $p$ and $q$ are originally known; however, finding this with only knowledge of the public key $pq$ is a monumental task, making RSA extremely secure.  
+\end{posterbox}
+
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%   HISTORY OF RSA (1)   
+%----------------------------------------------------------------------------------------
+
+\begin{posterbox}[name=history, column=13, below=rsa,span=17]{History}
+\begin{multicols}{2}
+RSA was first described publicly in 1977 by a trio of MIT mathematicians named Ron \textbf{R}ivest, Adi \textbf{S}hamir, and Leonard \textbf{A}dleman, after whom the algorithm is named. Prior to that the algorithm was used internally by the UK intelligence agency GCHQ, where it was discovered independently by Clifford Cocks. Despite having been discovered 4 years earlier, the algorithm is attributed to the MIT trio for their work being the first published for the general public.
+
+Today, RSA is ubiquitous in many areas if security, mainly due to its simplicity and security. It is secure enough to be used by government espionage, yet easy enough to be implemented by amateurs. 
+
+\begin{center}
+\includegraphics[width=1\linewidth]{RSA-2003.jpg}
+	\captionof*{figure}{Ron Rivest, Adi Shamir, Len Adleman in 2003}
+\end{center}
+\end{multicols}
+\end{posterbox}
+
+
+
 %----------------------------------------------------------------------------------------
 %	RSA ALGORITHM CODE (3)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=code,column=31,span=27,row=0]{RSA Algorithm Code}
+\begin{posterbox}[name=code,column=30,span=28,row=0]{RSA Algorithm Code}
 
 {\begin{verbatim}
 public final class RSA {
@@ -166,69 +216,17 @@ public class Euclidean {
 
 
 
-
-
-
-
-
-
 %----------------------------------------------------------------------------------------
-%	RSA ALGORITHM (1)
+%	CONCLUSION (2.0)
 %----------------------------------------------------------------------------------------
 
-\begin{posterbox}[name=rsa,column=13,row=0,span=17]{RSA Algorithm} % This block's bottom aligns with the bottom of the conclusion block
-
-The RSA algorithm works by generating two keys: a public and a private key. In reality, these keys are simply very long prime numbers. The security of the algorithm depends completely on the length of these numbers. In the past, numbers as low as 768-bit have been used, but modern practices call for no lower than 1024-bit; some implementations use as high as 4096-bit keys. For this implementation we decided to use 2048-bit keys, which would mean prime numbers on the order of $2^{2048}$.
-
-The algorithm works as such:
-\begin{enumerate}
-	\item First, two prime numbers $p$ and $q$ are chosen. These two numbers together are used to form the public key. Specifically, the public key is ${pq = p * q}$. Both $p$ and $q$ should be of the same bit-length for security, so for a 2048-bit key, we chose to use 1024-bit prime numbers. 
-	\item A number $e$ is chosen and agreed upon by all using the algorithm. This is called the public exponent and the standard is $e = 65537$, though in practice any number mutually prime with ${(p-1)(q-1)}$ is usable. $65537$ is chosen as it's a prime number and is equal to ${2^{2^4}+1 = 1 \ll (1 \ll 4) + 1}$, which can be easily calculated by a computer.
-	\item The private key $d$ is found by taking the \emph{modular inverse} of $e$ mod ${(p-1)*(q-1)}$. In our program, this number if found via the \emph{extended Euclidean algorithm}.
-	\item A message is chosen and represented as an integer called $M$.
-	\item From the message, a cypher-text $C$ is generated. $C = M^e\ mod\ pq$.
-	\item The message is sent to the owner of the public key, who can decrypt the message using $M = C^d\ mod\ pq$.
-\end{enumerate}
-
-The algorithm derives strength from  a few different factors. First, it is very difficult to factor a large number into it's component primes. When a RSA public key is generated, two small prime numbers are generated separately and then multiplied by each-other to calculate the public key. It is easy for a computer to perform this task, taking mere seconds on even an antiquated laptop. However, such cannot be said about finding the two primes that make the public key given just the key itself. Even a modern supercomputer would be incapable of such a feat, even on the time-scale a years.
-
-Further, RSA derives strength from how simple it is to calculate the modular inverse of $e\ mod\ pq$ given just $(p-1)(q-1)$. This process is done via the extended Euclidean algorithm. The algorithm will always calculate the inverse of \verb|A| mod \verb|B| so long as one exists. The output are numbers $a$, $s$, and $t$ such that $a = GCD(A,B)$ and $A*s + B*t = a$. The second output, $s$, is the RSA decryption key when $A=e$ and ${B=(p-1)(q-1)}$. This can be calculated efficiently when $p$ and $q$ are originally known; however, finding this with only knowledge of the public key $pq$ is a monumental task, making RSA extremely secure.  
-\end{posterbox}
-
-%----------------------------------------------------------------------------------------
-
-%----------------------------------------------------------------------------------------
-%   HISTORY OF RSA (1)   
-%----------------------------------------------------------------------------------------
-
-\begin{posterbox}[name=history, column=13, below=rsa,span=17]{History}
-\begin{multicols}{2}
-RSA was first described publicly in 1977 by a trio of MIT mathematicians named Ron \textbf{R}ivest, Adi \textbf{S}hamir, and Leonard \textbf{A}dleman, after whom the algorithm is named. Prior to that the algorithm was used internally by the UK intelligence agency GCHQ, where it was discovered independently by Clifford Cocks. Despite having been discovered 4 years earlier, the algorithm is attributed to the MIT trio for their work being the first published for the general public.
-
-Today, RSA is ubiquitous in many areas if security, mainly due to its simplicity and security. It is secure enough to be used by government espionage, yet easy enough to be implemented by amateurs. 
-
-\begin{center}
-\includegraphics[width=1\linewidth]{RSA-2003.jpg}
-	\captionof*{figure}{Ron Rivest, Adi Shamir, Len Adleman in 2003}
-\end{center}
-
-
-
-
-\end{multicols}
-\end{posterbox}
-
-%----------------------------------------------------------------------------------------
-%	CONCLUSION (3.0)
-%----------------------------------------------------------------------------------------
-
-\begin{posterbox}[name=conclusion, column=31, below=code, span=13]{Conclusion} 
+\begin{posterbox}[name=conclusion, column=30, below=code, span=14]{Conclusion} 
 This project served as great learning experience. Understanding and implementing the RSA algorithm is simple enough to be accessible to a student at a community college, yet ubiquitous and powerful enough to make a valuable chuck of knowledge. The implementation here is not complete, however. In practice a better padding scheme which adds entropy to the message is necessary to thwart attempts to decipher messages by accumulating a codex. Further, messaged signing by a second set of keys is common in practice to ensure that all messages were sent by the proper party. Any legitimate software application would be better off utilizing well-used RSA libraries which have been tested by many. However, for a hobby project, this program has been very useful to help understand the inner workings of the RSA algorithm.
 \end{posterbox}
 
 
 %----------------------------------------------------------------------------------------
-%	MESSAGE PADDING (3.1)
+%	MESSAGE PADDING (2.1)
 %----------------------------------------------------------------------------------------
 
 \begin{posterbox}[name=padding, column=44, below=code, span=14]{Message Padding}
@@ -238,11 +236,11 @@ In order to represent message plaintext as an integer for encryption, a \emph{pa
 
 
 %----------------------------------------------------------------------------------------
-%	ACKNOWLAGEMENTS (3.1)
+%	ACKNOWLAGEMENTS (2.1)
 %----------------------------------------------------------------------------------------
 
 \begin{posterbox}[name=conclusion, column=44, below=padding, span=14]{Acknowledgments} 
-We would like to thank Prof. Pezzimenti for his support in this project. We would also like to thanks as our parents for providing room and board pro bono while we conduct our studies. Further we would like to thanks Linus Torvalds for writing Git and the creators of NetBeans because they're seriously useful tools for development of applications in Java. Finally we'd like to thank Donald Knuth for writing \LaTeX and Brian Amberg for creating \verb|baposter|, the library through which this poster was rendered.
+We would like to thank Prof. Pezzimenti for his support in this project. We would also like to thanks as our parents for providing room and board while we conduct our studies. Further we would like to thanks Linus Torvalds for writing Git and the creators of NetBeans because they're seriously useful tools for development of applications in Java. Finally we'd like to thank Donald Knuth for writing \LaTeX and Brian Amberg for creating \verb|baposter|, the library through which this poster was rendered.
 \end{posterbox}
 
 \end{poster}
