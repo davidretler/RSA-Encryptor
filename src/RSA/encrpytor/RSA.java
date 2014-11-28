@@ -104,6 +104,13 @@ public final class RSA {
         BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
         return key;
     }
+    public static BigInteger[] generateKey(int bits) {
+        Random rand = new Random();
+        BigInteger p = BigInteger.probablePrime(bits, rand);
+        BigInteger q = BigInteger.probablePrime(bits, rand);
+        BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
+        return key;
+    }
 
     /**
      * Generates the private key given the prime factors of the public key.
