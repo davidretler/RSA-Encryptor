@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.math.BigInteger;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JFileChooser;
+
 
 
 /**
@@ -223,7 +225,7 @@ public class rsaGUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(keyButton)
-                        .addGap(163, 163, 163))))
+                        .addGap(164, 164, 164))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,9 +255,8 @@ public class rsaGUI extends javax.swing.JFrame {
                         .addComponent(privateKeyLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(keyButton)
-                        .addGap(22, 22, 22)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(keyButton)))
                 .addGap(19, 19, 19))
         );
 
@@ -303,11 +304,14 @@ public class rsaGUI extends javax.swing.JFrame {
 
     private void jMenuItem2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseReleased
         // TODO add your handling code here:
-        FileSelect chooser = new FileSelect();
-        chooser.setVisible(true);
+        //FileSelect chooser = new FileSelect();
+        //chooser.setVisible(true);
         //int reternVal = chooser.
-        
-        
+        JFileChooser jFileChooser1 = new JFileChooser();
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+            System.out.println("Open");
+        }  
     }//GEN-LAST:event_jMenuItem2MouseReleased
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
