@@ -70,6 +70,7 @@ public class Euclid {
         //Convert string to and from integer
         
         rsaGUI gui = new rsaGUI();
+        
         gui.setVisible(true);
         Message textConverter = new Message();
         final String COMMANDS = "e  -\tEncrypt\n"

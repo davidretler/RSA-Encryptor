@@ -6,8 +6,21 @@
 package RSA.encrpytor;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JFileChooser;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 
 /**
@@ -21,6 +34,12 @@ public class rsaGUI extends javax.swing.JFrame {
     private final int RADIX = Character.MAX_RADIX;
     private BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
     private Message messageConv = new Message();
+    private int keySize;
+    private File keyImport;
+    private String keyLocation;
+    
+    
+   
     /**
      * Creates new form rsaGUI
      */
@@ -54,6 +73,13 @@ public class rsaGUI extends javax.swing.JFrame {
         privateKeyTextArea = new javax.swing.JTextArea();
         privateKeyLabel = new javax.swing.JLabel();
         keyButton = new javax.swing.JButton();
+        BitCount = new javax.swing.JComboBox();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        ImportKeysMenu = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jInternalFrame1.setVisible(true);
 
@@ -70,6 +96,7 @@ public class rsaGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("RSA Encryptor");
+        setMinimumSize(new java.awt.Dimension(640, 480));
 
         messageLabel.setText("Enter A Message:");
 
@@ -101,7 +128,7 @@ public class rsaGUI extends javax.swing.JFrame {
         });
 
         keysLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        keysLabel.setText("Keys");
+        keysLabel.setText("Bits:");
 
         publicKeyLabel.setText("Public Key:");
 
@@ -115,6 +142,7 @@ public class rsaGUI extends javax.swing.JFrame {
         privateKeyTextArea.setColumns(20);
         privateKeyTextArea.setLineWrap(true);
         privateKeyTextArea.setRows(4);
+        privateKeyTextArea.setPreferredSize(new java.awt.Dimension(164, 77));
         jScrollPane4.setViewportView(privateKeyTextArea);
 
         privateKeyLabel.setText("Private  Key:");
@@ -125,6 +153,63 @@ public class rsaGUI extends javax.swing.JFrame {
                 keyButtonActionPerformed(evt);
             }
         });
+
+        BitCount.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "32", "128", "512", "1024", "2048", "4096" }));
+        BitCount.setSelectedIndex(5);
+
+        ImportKeysMenu.setText("File");
+        ImportKeysMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImportKeysMenuActionPerformed(evt);
+            }
+        });
+
+        jMenuItem2.setText("Import Keys From File");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenuItem2MouseReleased(evt);
+            }
+        });
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        ImportKeysMenu.add(jMenuItem2);
+
+        jMenuItem3.setText("Save Keys to File");
+        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenuItem3MouseReleased(evt);
+            }
+        });
+        ImportKeysMenu.add(jMenuItem3);
+
+        jMenuBar1.add(ImportKeysMenu);
+
+        jMenu2.setText("About");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenu2MouseReleased(evt);
+            }
+        });
+
+        jMenuItem1.setText("About RSA Encryptor");
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenuItem1MouseReleased(evt);
+            }
+        });
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,22 +227,26 @@ public class rsaGUI extends javax.swing.JFrame {
                         .addComponent(decryptButton))
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane3)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                                .addComponent(publicKeyLabel)
-                                .addComponent(privateKeyLabel))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(keyButton)
-                                .addGap(143, 143, 143)))
-                        .addGap(21, 21, 21))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(keysLabel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane3)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                                    .addComponent(publicKeyLabel)
+                                    .addComponent(privateKeyLabel))
+                                .addGap(21, 21, 21))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(keysLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BitCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(keyButton)
+                        .addGap(164, 164, 164))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,11 +254,12 @@ public class rsaGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(messageLabel)
-                    .addComponent(keysLabel))
+                    .addComponent(keysLabel)
+                    .addComponent(BitCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(encryptButton)
@@ -177,18 +267,17 @@ public class rsaGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(outputLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(publicKeyLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(privateKeyLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(keyButton)
-                        .addGap(27, 27, 27)))
+                        .addComponent(keyButton)))
                 .addGap(19, 19, 19))
         );
 
@@ -216,10 +305,108 @@ public class rsaGUI extends javax.swing.JFrame {
 
     private void keyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyButtonActionPerformed
         // TODO add your handling code here:
-        keys = myRSA.generateKey();
+        keySize = Integer.parseInt(BitCount.getSelectedItem().toString());
+        keys = myRSA.generateKey(keySize/2);
         publicKeyTextArea.setText(keys[0].toString(RADIX));
         privateKeyTextArea.setText(keys[1].toString(RADIX));
     }//GEN-LAST:event_keyButtonActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void ImportKeysMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImportKeysMenuActionPerformed
+        // TODO add your handling code here:
+        //FileSelect fileSel = new FileSelect();
+        new FileSelect().setVisible(true);
+        
+        
+    }//GEN-LAST:event_ImportKeysMenuActionPerformed
+
+    private void jMenuItem2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseReleased
+       
+        JFileChooser jFileChooser1 = new JFileChooser();
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        //Opens the Text file with keys and uses the first two lines as the public and private
+        //key respectively
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+            Reader reader=null;
+            System.out.println("Open");
+            keyImport = jFileChooser1.getSelectedFile();
+            keyLocation = keyImport.toString();
+            try {
+                reader = new FileReader(keyLocation);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            BufferedReader file = new BufferedReader(reader);
+            
+            String line;
+            int i=0;
+            try {
+                while(((line = file.readLine()) != null) && i<2){                    
+                    keys[i] = new BigInteger(line,RADIX);
+                    i++;
+                }
+                publicKeyTextArea.setText(keys[0].toString(RADIX));
+                privateKeyTextArea.setText(keys[1].toString(RADIX));
+                file.close();
+            } catch (IOException ex) {
+                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }  
+    }//GEN-LAST:event_jMenuItem2MouseReleased
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenu2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseReleased
+        // TODO add your handling code here:
+       new aboutPage().setVisible(true);
+    }//GEN-LAST:event_jMenu2MouseReleased
+
+    private void jMenuItem1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseReleased
+        // TODO add your handling code here:
+        new aboutPage().setVisible(true);
+    }//GEN-LAST:event_jMenuItem1MouseReleased
+
+    private void jMenuItem3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MouseReleased
+        // TODO add your handling code here:
+        Writer writer;
+        JFileChooser jFileChooser1 = new JFileChooser();
+        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)","txt"));
+        jFileChooser1.addChoosableFileFilter(new FileNameExtensionFilter("Key File (*.key)","key"));
+        int returnVal = jFileChooser1.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+            String fileName = jFileChooser1.getSelectedFile().toString();
+            
+            //Thank you to user59600 on StackOverflow for coming with this method of obtaining the extention from the FileFilter.
+            String ext = jFileChooser1.getFileFilter().toString().replaceFirst(".*extensions=\\[(.*)]]", ".$1").replaceFirst(".*AcceptAllFileFilter.*", "");
+            
+            
+            //adds the selected extension to the filename
+            //only adds extension if extension isn't already there. Only works with 3 letter extensions currently
+            if(!( fileName.substring(fileName.length()-4,fileName.length()).equals(ext) )){
+              fileName = fileName + ext;  
+            }
+            System.out.println(fileName);
+            try {
+                writer = new FileWriter(fileName);
+                String toWrite = publicKeyTextArea.getText();
+                toWrite = toWrite + "\n";
+                toWrite = toWrite + privateKeyTextArea.getText();
+                System.out.println(toWrite);
+                writer.write(toWrite);
+                writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+               
+        }
+       
+    }//GEN-LAST:event_jMenuItem3MouseReleased
 
     /**
      * @param args the command line arguments
@@ -257,9 +444,16 @@ public class rsaGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox BitCount;
+    private javax.swing.JMenu ImportKeysMenu;
     private javax.swing.JButton decryptButton;
     private javax.swing.JButton encryptButton;
     private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
