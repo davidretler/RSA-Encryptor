@@ -6,11 +6,20 @@
 package RSA.encrpytor;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 
@@ -26,6 +35,9 @@ public class rsaGUI extends javax.swing.JFrame {
     private BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
     private Message messageConv = new Message();
     private int keySize;
+    private File keyImport;
+    private String keyLocation;
+    
     
    
     /**
@@ -65,6 +77,7 @@ public class rsaGUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         ImportKeysMenu = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -163,6 +176,14 @@ public class rsaGUI extends javax.swing.JFrame {
             }
         });
         ImportKeysMenu.add(jMenuItem2);
+
+        jMenuItem3.setText("Save Keys to File");
+        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenuItem3MouseReleased(evt);
+            }
+        });
+        ImportKeysMenu.add(jMenuItem3);
 
         jMenuBar1.add(ImportKeysMenu);
 
@@ -303,14 +324,37 @@ public class rsaGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ImportKeysMenuActionPerformed
 
     private void jMenuItem2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseReleased
-        // TODO add your handling code here:
-        //FileSelect chooser = new FileSelect();
-        //chooser.setVisible(true);
-        //int reternVal = chooser.
+       
         JFileChooser jFileChooser1 = new JFileChooser();
         int returnVal = jFileChooser1.showOpenDialog(this);
+        //Opens the Text file with keys and uses the first two lines as the public and private
+        //key respectively
         if (returnVal == JFileChooser.APPROVE_OPTION){
+            Reader reader=null;
             System.out.println("Open");
+            keyImport = jFileChooser1.getSelectedFile();
+            keyLocation = keyImport.toString();
+            try {
+                reader = new FileReader(keyLocation);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            BufferedReader file = new BufferedReader(reader);
+            
+            String line;
+            int i=0;
+            try {
+                while(((line = file.readLine()) != null) && i<2){                    
+                    keys[i] = new BigInteger(line,RADIX);
+                    i++;
+                }
+                publicKeyTextArea.setText(keys[0].toString(RADIX));
+                privateKeyTextArea.setText(keys[1].toString(RADIX));
+                file.close();
+            } catch (IOException ex) {
+                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }  
     }//GEN-LAST:event_jMenuItem2MouseReleased
 
@@ -327,6 +371,42 @@ public class rsaGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         new aboutPage().setVisible(true);
     }//GEN-LAST:event_jMenuItem1MouseReleased
+
+    private void jMenuItem3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MouseReleased
+        // TODO add your handling code here:
+        Writer writer;
+        JFileChooser jFileChooser1 = new JFileChooser();
+        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)","txt"));
+        jFileChooser1.addChoosableFileFilter(new FileNameExtensionFilter("Key File (*.key)","key"));
+        int returnVal = jFileChooser1.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+            String fileName = jFileChooser1.getSelectedFile().toString();
+            
+            //Thank you to user59600 on StackOverflow for coming with this method of obtaining the extention from the FileFilter.
+            String ext = jFileChooser1.getFileFilter().toString().replaceFirst(".*extensions=\\[(.*)]]", ".$1").replaceFirst(".*AcceptAllFileFilter.*", "");
+            
+            
+            //adds the selected extension to the filename
+            //only adds extension if extension isn't already there. Only works with 3 letter extensions currently
+            if(!( fileName.substring(fileName.length()-4,fileName.length()).equals(ext) )){
+              fileName = fileName + ext;  
+            }
+            System.out.println(fileName);
+            try {
+                writer = new FileWriter(fileName);
+                String toWrite = publicKeyTextArea.getText();
+                toWrite = toWrite + "\n";
+                toWrite = toWrite + privateKeyTextArea.getText();
+                System.out.println(toWrite);
+                writer.write(toWrite);
+                writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+               
+        }
+       
+    }//GEN-LAST:event_jMenuItem3MouseReleased
 
     /**
      * @param args the command line arguments
@@ -373,6 +453,7 @@ public class rsaGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
