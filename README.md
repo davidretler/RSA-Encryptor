@@ -21,4 +21,6 @@ Here are a couple screenshots
 ![GUI](Screenshots/RSA-screenshot.png)
 ![CLI](Screenshots/cli-screenshot.png)
 
+
+##Disclaimer
 This software is merely a proof-of-concept. It is not designed to be a legitimate encryption tool. Data encryption is a very sensitive endeavor and you should always use well-tested and well-supported encryption software. This software is provided for educational purposes only and is not intended for legitimate use.
