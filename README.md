@@ -15,7 +15,7 @@ This program implements the following aspects of RSA encryption:
 The software comes with a command-line front-end as well as a GUI.
 
 ##How to Run
-You can run the program by downloading the `.jar`s in the [`bin/v1`](bin/v1) directory. The program comes separately as a [GUI](bin/RSA_GUI.jar) and a [CLI](bin/RSA_CLI.jar) frontend. 
+You can run the program by downloading the `.jar`s in the [`bin/v1`](bin/v1) directory. The program comes separately as a [GUI](bin/v1/RSA_GUI.jar) and a [CLI](bin/v1/RSA_CLI.jar) frontend. 
 
 ##Screenshots
 Here are a couple screenshots
