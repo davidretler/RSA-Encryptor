@@ -10,6 +10,7 @@ This program implements the following aspects of RSA encryption:
 * Plain-text message encryption
 * Message decryption
 * Supports various different key sizes
+* Saving keys and messages to a file
 
 The software comes with a command-line front-end as well as a GUI.
 
