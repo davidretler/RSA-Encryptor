@@ -23,6 +23,9 @@ import java.math.BigInteger;
 import java.util.Scanner;
 import java.io.*;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  * Driver for the RSA encryption class
  * <p>
@@ -41,8 +44,11 @@ import java.io.*;
  */
 public class Euclid {
 
-    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, IOException {
-        Scanner scan = new Scanner(System.in);
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        
+
+    	
+    	Scanner scan = new Scanner(System.in);
         //File to say the key
         File keyFile = new File("key.txt");
         BufferedReader keyReader;
@@ -69,9 +75,7 @@ public class Euclid {
         final int RADIX = Character.MAX_RADIX;
         //Convert string to and from integer
         
-        rsaGUI gui = new rsaGUI();
         
-        gui.setVisible(true);
         Message textConverter = new Message();
         final String COMMANDS = "e  -\tEncrypt\n"
                 + "d  -\tDecrypt\n"
@@ -99,7 +103,7 @@ public class Euclid {
             switch (option) {
                 case "q":
                     //Closes the program
-                    System.out.println("Closing");
+                    System.out.println("Closing\n");
                     return;
                 case "o":
                     //Prints the options
@@ -180,7 +184,7 @@ public class Euclid {
                     keyReader = new BufferedReader(new FileReader(keyFile));
                     pq = new BigInteger(keyReader.readLine(), RADIX);
                     d = new BigInteger(keyReader.readLine(), RADIX);
-                    System.out.println("Public key: " + pq.toString(RADIX));
+                    System.out.println("Public key: " + pq.toString(RADIX) + "\n");
                     System.out.println("Private key: " + d.toString(RADIX));
                     break;
                 case "wm":
@@ -239,7 +243,10 @@ public class Euclid {
                 default:
                     System.out.println("Command '"+option+"' not found. \'o\' for options.");
                     break;
+                    
+                
             }
+            System.out.println(); //always print a new line
         }
     }
 }
