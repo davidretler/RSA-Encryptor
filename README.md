@@ -17,6 +17,12 @@ The software comes with a command-line front-end as well as a GUI.
 ##How to Run
 You can run the program by downloading the `.jar`s in the [`bin/v1`](bin/v1) directory. The program comes separately as a [GUI](bin/v1/RSA_GUI.jar) and a [CLI](bin/v1/RSA_CLI.jar) frontend. 
 
+For example, to run the GUI you would type:
+
+    java -jar ./RSA_GUI.jar
+
+in the directory `RSA_GUI` was downloaded to.
+
 ##Screenshots
 Here are a couple screenshots
 ![GUI](Screenshots/RSA-screenshot.png)
