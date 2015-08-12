@@ -16,6 +16,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JComboBox;
+import javax.swing.JMenuBar;
+import javax.swing.*;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.logging.Level;
@@ -142,7 +145,6 @@ public class rsaGUI extends javax.swing.JFrame {
         privateKeyTextArea.setColumns(20);
         privateKeyTextArea.setLineWrap(true);
         privateKeyTextArea.setRows(4);
-        privateKeyTextArea.setPreferredSize(new java.awt.Dimension(164, 77));
         jScrollPane4.setViewportView(privateKeyTextArea);
 
         privateKeyLabel.setText("Private  Key:");
