@@ -35,10 +35,7 @@ import java.util.Random;
  */
 public final class RSA {
 
-    /**
-     * Message class to convert text to integer representation and back.
-     */
-    static final Message textConverter = new Message();
+    static final BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
 
     /**
      * Encrypts the given integer-represented message.
@@ -49,6 +46,20 @@ public final class RSA {
      * @return ciphertext
      */
     public static BigInteger encrypt(BigInteger M, BigInteger e, BigInteger pq) {
+        BigInteger C = M.modPow(e, pq);
+        return C;
+    }
+
+
+    /**
+     * Encrypts the given integer-represented message.
+     *
+     * @param M message
+     * @param e power
+     * @param pq public key
+     * @return ciphertext
+     */
+    public static BigInteger encrypt(BigInteger M, BigInteger pq) {
         BigInteger C = M.modPow(e, pq);
         return C;
     }
@@ -65,33 +76,8 @@ public final class RSA {
         BigInteger M = C.modPow(d, pq);
         return M;
     }
-
-    /**
-     * Encrypts the given string-represented message.
-     *
-     * @param M message
-     * @param e power
-     * @param pq public key
-     * @return ciphertext
-     */
-    public static BigInteger encrypt(String M, BigInteger e, BigInteger pq) {
-        BigInteger Mn = textConverter.toInt(M);
-        return encrypt(Mn, e, pq);
-    }
-
-    /**
-     * Decrypts the given string-represented message.
-     *
-     * @param C ciphertext
-     * @param d private key
-     * @param pq public key
-     * @return message
-     */
-    public static BigInteger decrypt(String C, BigInteger d, BigInteger pq) {
-        BigInteger Cn = textConverter.toInt(C);
-        return encrypt(Cn, d, pq);
-    }
-
+    
+    
     /**
      * Generates a 2048-bit public and private key.
      *

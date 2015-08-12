@@ -65,18 +65,15 @@ public class Euclid {
         BigInteger pq;
         //To store pivate key
         BigInteger d;
-        //To store plaintxt as integer
-        BigInteger M;
-        //To store cyphertext as intger
+        //message to store
+        Message message = new Message();
         BigInteger C;
-        //Message paintext as string
         String messageText;
+        
         //To convert to and from chareter represntation of integers
         final int RADIX = Character.MAX_RADIX;
         //Convert string to and from integer
         
-        
-        Message textConverter = new Message();
         final String COMMANDS = "e  -\tEncrypt\n"
                 + "d  -\tDecrypt\n"
                 + "k  -\tGenerate Key and write to file\n"
@@ -128,16 +125,16 @@ public class Euclid {
                     break;
                 case "e":
                     //Prompts the user for the public key
-                    //Promprs the user for a message
-                    //Returns the encypted message
+                    //Prompts the user for a message
+                    //Returns the encypted message as a BASE64 string
                     System.out.print("Enter public key: ");
                     pq = new BigInteger(scan.next(), RADIX);
                     scan.nextLine();
                     System.out.print("Enter message: ");
                     messageText = scan.nextLine();
-                    M = textConverter.toInt(messageText);
-                    C = RSA.encrypt(M, e, pq);
-                    System.out.println("Encrypted: " + C.toString(RADIX));
+                    message = new Message(messageText);
+                    message.Encrypt(pq);
+                    System.out.println("Encrypted: " + message.toInt().toString(RADIX));
                     break;
                 case "d":
                     //Prompts the user for a public key
@@ -151,8 +148,9 @@ public class Euclid {
                     d = new BigInteger(scan.next(), RADIX);
                     System.out.print("Enter encrypted message: ");
                     C = new BigInteger(scan.next(), RADIX);
-                    M = RSA.decrypt(C, d, pq);
-                    System.out.println("Decrypted message: " + textConverter.toString(M));
+                    message = new Message(C);
+                    message.Decrypt(pq, d);
+                    System.out.println("Decrypted message: " + message.toString());
                     break;
                 case "ef":
                     //Uses the key from the file for encryption
@@ -162,9 +160,9 @@ public class Euclid {
                     pq = new BigInteger(keyReader.readLine(), RADIX);
                     System.out.print("Enter message: ");
                     messageText = scan.nextLine();
-                    M = textConverter.toInt(messageText);
-                    C = RSA.encrypt(M, e, pq);
-                    System.out.println("Encrypted: " + C.toString(RADIX));
+                    message = new Message(messageText);
+                    message.Encrypt(pq);
+                    System.out.println("Encrypted: " + message.toInt().toString(RADIX));
                     break;
                 case "df":
                     //Decrypts using both keys from the file
@@ -175,8 +173,9 @@ public class Euclid {
                     d = new BigInteger(keyReader.readLine(), RADIX);
                     System.out.print("Enter encrypted message: ");
                     C = new BigInteger(scan.next(), RADIX);
-                    M = RSA.decrypt(C, d, pq);
-                    System.out.println("Decrypted message: " + textConverter.toString(M));
+                    message = new Message(C);
+                    message.Decrypt(pq, d);
+                    System.out.println("Decrypted message: " + message.toString());
                     break;
                 case "rk":
                     //Reads both keys from the key file
@@ -207,12 +206,13 @@ public class Euclid {
                     messageReader = new BufferedReader(new FileReader(messageFile));
                     messageText = messageReader.readLine();
                     messageReader.close();
+                    message = new Message(messageText);
                     keyReader = new BufferedReader(new FileReader(keyFile));
                     pq = new BigInteger(keyReader.readLine(), RADIX);
                     keyReader.close();
-                    C = RSA.encrypt(messageText, e, pq);
+                    message.Encrypt(pq);
                     messageWriter = new PrintWriter(messageFile);
-                    messageWriter.println(C.toString(RADIX));
+                    messageWriter.println(message.toInt().toString(RADIX));
                     //System.out.println(textConverter.toString(C));
                     //messageWriter.println(textConverter.toString(C));
                     //System.out.println(C.toString());
@@ -230,16 +230,15 @@ public class Euclid {
                     d = new BigInteger(keyReader.readLine(), RADIX);
                     keyReader.close();
                     C = new BigInteger(messageText, RADIX);
+                    message = new Message(C);
                     //C = textConverter.toInt(messageText);
                     //System.out.println(C.toString());
-                    M = RSA.decrypt(C, d, pq);
+                    message.Decrypt(pq, d);
                     messageWriter = new PrintWriter(messageFile);
-                    messageWriter.println(textConverter.toString(M));
+                    messageWriter.println(message.toString());
                     System.out.println("Decrypted message written.");
                     messageWriter.close();
                     break;
-                
-                    
                 default:
                     System.out.println("Command '"+option+"' not found. \'o\' for options.");
                     break;
