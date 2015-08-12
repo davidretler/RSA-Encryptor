@@ -231,9 +231,12 @@ public class rsaGUI extends javax.swing.JFrame {
         scrollPane = new JScrollPane();
         scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JTextArea textArea = new JTextArea();
-        textArea.setAlignmentX(Component.LEFT_ALIGNMENT);
-        scrollPane.setViewportView(textArea);
+        recipientPublicKey = new JTextArea();
+        recipientPublicKey.setLineWrap(true);
+        recipientPublicKey.setRows(4);
+        recipientPublicKey.setColumns(20);
+        recipientPublicKey.setAlignmentX(Component.LEFT_ALIGNMENT);
+        scrollPane.setViewportView(recipientPublicKey);
         GroupLayout groupLayout = new GroupLayout(getContentPane());
         groupLayout.setHorizontalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
@@ -325,7 +328,8 @@ public class rsaGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String text = messageTextArea.getText();
         message = new Message(text);
-        if(keys[0] != null) {
+        if(!recipientPublicKey.getText().equals("")) {
+        	keys[0] = new BigInteger(recipientPublicKey.getText(),RADIX);
         	message.Encrypt(keys[0]);
         	outputTextArea.setText(message.toInt().toString(RADIX));
         	messageTextArea.setText(message.toString());
@@ -343,7 +347,9 @@ public class rsaGUI extends javax.swing.JFrame {
         String text = outputTextArea.getText();
         BigInteger textInt = new BigInteger(text,RADIX);
         message = new Message(textInt);
-        if(keys[0] != null && keys[1] != null) {
+        if(!publicKeyTextArea.getText().equals("") && !privateKeyTextArea.getText().equals("")) {
+        	keys[0] = new BigInteger(publicKeyTextArea.getText(), RADIX);
+        	keys[1] = new BigInteger(privateKeyTextArea.getText(), RADIX); 
         	message.Decrypt(keys[0], keys[1]);
             messageTextArea.setText(message.toString());
         } else {
@@ -520,4 +526,5 @@ public class rsaGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea publicKeyTextArea;
     private JLabel lblRecipientPublicKey;
     private JScrollPane scrollPane;
+    private JTextArea recipientPublicKey;
 }
