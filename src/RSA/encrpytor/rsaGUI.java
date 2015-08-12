@@ -26,7 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
- * @author Chris
+ * @author Chris Etler, David Etler
  */
 public class rsaGUI extends javax.swing.JFrame {
 
@@ -100,16 +100,14 @@ public class rsaGUI extends javax.swing.JFrame {
         setTitle("RSA Encryptor");
         setMinimumSize(new java.awt.Dimension(640, 480));
 
-        messageLabel.setText("Enter A Message:");
+        messageLabel.setText("Plaintext Message:");
 
-        outputLabel.setText("Output:");
+        outputLabel.setText("Encrypted Message:");
 
         messageTextArea.setColumns(20);
         messageTextArea.setLineWrap(true);
         messageTextArea.setRows(5);
         jScrollPane1.setViewportView(messageTextArea);
-
-        outputTextArea.setEditable(false);
         outputTextArea.setColumns(20);
         outputTextArea.setLineWrap(true);
         outputTextArea.setRows(5);
@@ -294,6 +292,7 @@ public class rsaGUI extends javax.swing.JFrame {
         if(keys[0] != null) {
         	message.Encrypt(keys[0]);
         	outputTextArea.setText(message.toInt().toString(RADIX));
+        	messageTextArea.setText(message.toString());
         }
         else {
         	JOptionPane.showMessageDialog(null, "You need to enter a public key to encrypt.","Error", JOptionPane.ERROR_MESSAGE);
@@ -303,19 +302,21 @@ public class rsaGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_encryptButtonActionPerformed
 
+    //decrypts the message
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
-        String text = messageTextArea.getText();
+        String text = outputTextArea.getText();
         BigInteger textInt = new BigInteger(text,RADIX);
         message = new Message(textInt);
         if(keys[0] != null && keys[1] != null) {
         	message.Decrypt(keys[0], keys[1]);
-            outputTextArea.setText(message.toString());
+            messageTextArea.setText(message.toString());
         } else {
         	JOptionPane.showMessageDialog(null, "You need to enter a public and private keypair to decrypt.","Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_decryptButtonActionPerformed
 
+    //generates keys and displays them in the text areas
     private void keyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyButtonActionPerformed
         // TODO add your handling code here:
         keySize = Integer.parseInt(BitCount.getSelectedItem().toString());
