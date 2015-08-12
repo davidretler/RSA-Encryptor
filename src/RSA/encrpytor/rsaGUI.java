@@ -206,6 +206,12 @@ public class rsaGUI extends javax.swing.JFrame {
         ImportKeysMenu.add(separator);
         
         mntmImportMessageFrom = new JMenuItem("Import Message From File");
+        mntmImportMessageFrom.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseReleased(MouseEvent arg0) {
+        		openMessage(arg0);
+        	}
+        });
         ImportKeysMenu.add(mntmImportMessageFrom);
         
         mntmSaveMessageTo = new JMenuItem("Save Message To File");
@@ -471,9 +477,10 @@ public class rsaGUI extends javax.swing.JFrame {
         	}
         	
         	try {
-        		 FileOutputStream myFOS = new FileOutputStream("fileName");
+        		 FileOutputStream myFOS = new FileOutputStream(fileName);
         		 ObjectOutputStream myOOS = new ObjectOutputStream(myFOS);
         		 myOOS.writeObject(message);
+        		 System.out.println("Saved message to " + fileName);
         		 myOOS.close();
         		 myFOS.close();
         	} catch (IOException ex){
@@ -483,9 +490,13 @@ public class rsaGUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Open the message
+     * @param evt
+     */
     private void openMessage(java.awt.event.MouseEvent evt) {
     	JFileChooser jFileChooser1 = new JFileChooser();
-        int returnVal = jFileChooser1.showSaveDialog(this);
+        int returnVal = jFileChooser1.showOpenDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
         	String fileName = jFileChooser1.getSelectedFile().toString();
         	
@@ -495,6 +506,7 @@ public class rsaGUI extends javax.swing.JFrame {
         		message = (Message) myOIS.readObject();
         		myFIS.close();
         		myOIS.close();
+        		displayMessage();
         	} catch (IOException ex) {
         		Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
         		JOptionPane.showMessageDialog(null, "Reading message from file failed.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -544,6 +556,14 @@ public class rsaGUI extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jMenuItem3MouseReleased
 
+    /**
+     * Displays the message, updating the text areas
+     */
+    private void displayMessage() {
+    	messageTextArea.setText(message.toString());
+    	outputTextArea.setText(message.toInt().toString(RADIX));
+    }
+    
     /**
      * @param args the command line arguments
      */

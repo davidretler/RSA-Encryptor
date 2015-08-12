@@ -31,7 +31,12 @@ import java.math.BigInteger;
  * 
  * @author Chris Etler, David Etler
  */
-public class Message {
+public class Message implements java.io.Serializable {
+
+	/**
+	 * Generated ID
+	 */
+	private static final long serialVersionUID = 3919067545339606603L;
 
 	static Alphabet myAlphabet = new Alphabet(); //static definition of the alphabet
 	
