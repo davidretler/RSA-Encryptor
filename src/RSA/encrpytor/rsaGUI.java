@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.TextArea;
 
 
 
@@ -214,80 +215,83 @@ public class rsaGUI extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
+        
+        lblRecipientPublicKey = new JLabel("Recipient Public Key");
+        GroupLayout groupLayout = new GroupLayout(getContentPane());
+        groupLayout.setHorizontalGroup(
+        	groupLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(groupLayout.createSequentialGroup()
         			.addGap(22)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(messageLabel)
-        				.addComponent(outputLabel)
-        				.addGroup(layout.createSequentialGroup()
+        			.addComponent(messageLabel)
+        			.addGap(264)
+        			.addComponent(keysLabel)
+        			.addGap(12)
+        			.addComponent(BitCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(groupLayout.createSequentialGroup()
+        			.addGap(22)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(groupLayout.createSequentialGroup()
         					.addGap(10)
         					.addComponent(encryptButton)
-        					.addPreferredGap(ComponentPlacement.UNRELATED)
-        					.addComponent(decryptButton))
-        				.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-        				.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
+        					.addGap(12)
+        					.addComponent(decryptButton)))
         			.addGap(26)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(privateKeyLabel)
-        					.addContainerGap())
-        				.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        					.addGroup(layout.createSequentialGroup()
-        						.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
-        						.addContainerGap())
-        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        						.addGroup(layout.createSequentialGroup()
-        							.addGap(128)
-        							.addComponent(keyButton)
-        							.addGap(161))
-        						.addGroup(layout.createSequentialGroup()
-        							.addComponent(keysLabel)
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(BitCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        							.addContainerGap(291, Short.MAX_VALUE))
-        						.addGroup(layout.createSequentialGroup()
-        							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        								.addComponent(jScrollPane3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-        								.addComponent(publicKeyLabel, Alignment.LEADING))
-        							.addGap(21))))))
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(publicKeyLabel)
+        				.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(privateKeyLabel)
+        				.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)))
+        		.addGroup(groupLayout.createSequentialGroup()
+        			.addGap(550)
+        			.addComponent(keyButton))
+        		.addGroup(groupLayout.createSequentialGroup()
+        			.addGap(22)
+        			.addComponent(outputLabel)
+        			.addGap(256)
+        			.addComponent(lblRecipientPublicKey))
+        		.addGroup(groupLayout.createSequentialGroup()
+        			.addGap(22)
+        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE))
         );
-        layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(messageLabel)
-        				.addComponent(keysLabel)
+        groupLayout.setVerticalGroup(
+        	groupLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(groupLayout.createSequentialGroup()
+        			.addGap(12)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(groupLayout.createSequentialGroup()
+        					.addGap(5)
+        					.addComponent(messageLabel))
+        				.addGroup(groupLayout.createSequentialGroup()
+        					.addGap(5)
+        					.addComponent(keysLabel))
         				.addComponent(BitCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        			.addGap(6)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(groupLayout.createSequentialGroup()
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 327, GroupLayout.PREFERRED_SIZE)
+        					.addGap(6)
+        					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
         						.addComponent(encryptButton)
         						.addComponent(decryptButton)))
-        				.addGroup(layout.createSequentialGroup()
+        				.addGroup(groupLayout.createSequentialGroup()
         					.addComponent(publicKeyLabel)
-        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGap(6)
         					.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGap(6)
         					.addComponent(privateKeyLabel)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(jScrollPane4, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)))
-        			.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGap(6)
+        					.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(6)
         			.addComponent(keyButton)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(outputLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
-        			.addGap(19))
+        			.addGap(6)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(outputLabel)
+        				.addComponent(lblRecipientPublicKey))
+        			.addGap(6)
+        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
         );
-        getContentPane().setLayout(layout);
+        getContentPane().setLayout(groupLayout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -490,5 +494,5 @@ public class rsaGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea privateKeyTextArea;
     private javax.swing.JLabel publicKeyLabel;
     private javax.swing.JTextArea publicKeyTextArea;
-    // End of variables declaration//GEN-END:variables
+    private JLabel lblRecipientPublicKey;
 }

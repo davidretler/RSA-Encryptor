@@ -45,9 +45,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Euclid {
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        
 
-    	
+
+
     	Scanner scan = new Scanner(System.in);
         //File to say the key
         File keyFile = new File("key.txt");
@@ -69,11 +69,11 @@ public class Euclid {
         Message message = new Message();
         BigInteger C;
         String messageText;
-        
+
         //To convert to and from chareter represntation of integers
         final int RADIX = Character.MAX_RADIX;
         //Convert string to and from integer
-        
+
         final String COMMANDS = "e  -\tEncrypt\n"
                 + "d  -\tDecrypt\n"
                 + "k  -\tGenerate Key and write to file\n"
@@ -86,7 +86,7 @@ public class Euclid {
                 + "em -\tEncrypt the message file with the key file\n"
                 + "dm -\tDecypt the message file with the key file\n"
                 + "rm -\tRead the message file";
-                
+
 
         System.out.println("RSA Message Ecnryption/Decryption Shell -- 'o' for options.");
         //Print options
@@ -242,8 +242,8 @@ public class Euclid {
                 default:
                     System.out.println("Command '"+option+"' not found. \'o\' for options.");
                     break;
-                    
-                
+
+
             }
             System.out.println(); //always print a new line
         }
