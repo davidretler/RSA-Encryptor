@@ -7,17 +7,15 @@ package RSA.encrpytor;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
-import javax.swing.JMenuBar;
 import javax.swing.*;
 import java.io.Reader;
 import java.io.Writer;
@@ -28,6 +26,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.TextArea;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
@@ -192,7 +192,7 @@ public class rsaGUI extends javax.swing.JFrame {
         });
         ImportKeysMenu.add(jMenuItem2);
 
-        jMenuItem3.setText("Save Keys to File");
+        jMenuItem3.setText("Save Keys To File");
         jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jMenuItem3MouseReleased(evt);
@@ -201,6 +201,21 @@ public class rsaGUI extends javax.swing.JFrame {
         ImportKeysMenu.add(jMenuItem3);
 
         jMenuBar1.add(ImportKeysMenu);
+        
+        separator = new JSeparator();
+        ImportKeysMenu.add(separator);
+        
+        mntmImportMessageFrom = new JMenuItem("Import Message From File");
+        ImportKeysMenu.add(mntmImportMessageFrom);
+        
+        mntmSaveMessageTo = new JMenuItem("Save Message To File");
+        mntmSaveMessageTo.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseReleased(MouseEvent arg0) {
+        		saveMessage(arg0);
+        	}
+        });
+        ImportKeysMenu.add(mntmSaveMessageTo);
 
         jMenu2.setText("About");
         jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -323,7 +338,10 @@ public class rsaGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //encrypts the message in the text area
+    /**
+     * Encrypts the message in the text area, writing it to the other text area
+     * @param evt
+     */
     private void encryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptButtonActionPerformed
         // TODO add your handling code here:
         String text = messageTextArea.getText();
@@ -342,7 +360,10 @@ public class rsaGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_encryptButtonActionPerformed
 
-    //decrypts the message
+    /**
+     * Decrypts the message
+     * @param evt
+     */
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
         String text = outputTextArea.getText();
         BigInteger textInt = new BigInteger(text,RADIX);
@@ -358,7 +379,10 @@ public class rsaGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_decryptButtonActionPerformed
 
-    //generates keys and displays them in the text areas
+    /**
+     * Generates keys
+     * @param evt
+     */
     private void keyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyButtonActionPerformed
         // TODO add your handling code here:
         keySize = Integer.parseInt(BitCount.getSelectedItem().toString());
@@ -378,7 +402,11 @@ public class rsaGUI extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_ImportKeysMenuActionPerformed
-
+    
+    /**
+     * Open key file
+     * @param evt
+     */
     private void jMenuItem2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseReleased
        
         JFileChooser jFileChooser1 = new JFileChooser();
@@ -428,8 +456,60 @@ public class rsaGUI extends javax.swing.JFrame {
         new aboutPage().setVisible(true);
     }//GEN-LAST:event_jMenuItem1MouseReleased
 
+    /**
+     * Saves the message to a file, using a file output stram
+     * @param evt
+     */
+    private void saveMessage(java.awt.event.MouseEvent evt) {
+        JFileChooser jFileChooser1 = new JFileChooser();
+        int returnVal = jFileChooser1.showSaveDialog(this);
+        //if the user hit "save"
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+        	String fileName = jFileChooser1.getSelectedFile().toString();
+        	if(!fileName.endsWith(".msg")) {
+        		fileName = fileName + ".msg"; //add extension if not present
+        	}
+        	
+        	try {
+        		 FileOutputStream myFOS = new FileOutputStream("fileName");
+        		 ObjectOutputStream myOOS = new ObjectOutputStream(myFOS);
+        		 myOOS.writeObject(message);
+        		 myOOS.close();
+        		 myFOS.close();
+        	} catch (IOException ex){
+        		Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+        		JOptionPane.showMessageDialog(null, "Saving message to file failed.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        }
+    }
+    
+    private void openMessage(java.awt.event.MouseEvent evt) {
+    	JFileChooser jFileChooser1 = new JFileChooser();
+        int returnVal = jFileChooser1.showSaveDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+        	String fileName = jFileChooser1.getSelectedFile().toString();
+        	
+        	try {
+        		FileInputStream myFIS = new FileInputStream(fileName);
+        		ObjectInputStream myOIS = new ObjectInputStream(myFIS);
+        		message = (Message) myOIS.readObject();
+        		myFIS.close();
+        		myOIS.close();
+        	} catch (IOException ex) {
+        		Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+        		JOptionPane.showMessageDialog(null, "Reading message from file failed.", "Error", JOptionPane.ERROR_MESSAGE);
+        	} catch (ClassNotFoundException ex) {
+        		Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+        		JOptionPane.showMessageDialog(null, "An unexpected error occured.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        }
+    }
+    
+    /**
+     * Save key file, prompting the user to choose the location
+     * @param evt
+     */
     private void jMenuItem3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MouseReleased
-        // TODO add your handling code here:
         Writer writer;
         JFileChooser jFileChooser1 = new JFileChooser();
         jFileChooser1.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)","txt"));
@@ -444,7 +524,7 @@ public class rsaGUI extends javax.swing.JFrame {
             
             //adds the selected extension to the filename
             //only adds extension if extension isn't already there. Only works with 3 letter extensions currently
-            if(!( fileName.substring(fileName.length()-4,fileName.length()).equals(ext) )){
+            if(!( fileName.endsWith(ext) )){
               fileName = fileName + ext;  
             }
             System.out.println(fileName);
@@ -527,4 +607,7 @@ public class rsaGUI extends javax.swing.JFrame {
     private JLabel lblRecipientPublicKey;
     private JScrollPane scrollPane;
     private JTextArea recipientPublicKey;
+    private JMenuItem mntmImportMessageFrom;
+    private JMenuItem mntmSaveMessageTo;
+    private JSeparator separator;
 }
