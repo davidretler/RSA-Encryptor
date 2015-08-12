@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.TextArea;
+import java.awt.Component;
 
 
 
@@ -68,20 +69,29 @@ public class rsaGUI extends javax.swing.JFrame {
         messageLabel = new javax.swing.JLabel();
         outputLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setAlignmentX(Component.LEFT_ALIGNMENT);
         messageTextArea = new javax.swing.JTextArea();
+        messageTextArea.setAlignmentX(Component.LEFT_ALIGNMENT);
         jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane2.setAlignmentX(Component.LEFT_ALIGNMENT);
         outputTextArea = new javax.swing.JTextArea();
+        outputTextArea.setAlignmentX(Component.LEFT_ALIGNMENT);
         encryptButton = new javax.swing.JButton();
         decryptButton = new javax.swing.JButton();
         keysLabel = new javax.swing.JLabel();
         publicKeyLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane3.setAlignmentX(Component.LEFT_ALIGNMENT);
         publicKeyTextArea = new javax.swing.JTextArea();
+        publicKeyTextArea.setAlignmentX(Component.LEFT_ALIGNMENT);
         jScrollPane4 = new javax.swing.JScrollPane();
+        jScrollPane4.setAlignmentX(Component.LEFT_ALIGNMENT);
         privateKeyTextArea = new javax.swing.JTextArea();
+        privateKeyTextArea.setAlignmentX(Component.LEFT_ALIGNMENT);
         privateKeyLabel = new javax.swing.JLabel();
         keyButton = new javax.swing.JButton();
         BitCount = new javax.swing.JComboBox();
+        BitCount.setAlignmentX(Component.LEFT_ALIGNMENT);
         jMenuBar1 = new javax.swing.JMenuBar();
         ImportKeysMenu = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -160,7 +170,7 @@ public class rsaGUI extends javax.swing.JFrame {
         });
 
         BitCount.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "32", "128", "512", "1024", "2048", "4096" }));
-        BitCount.setSelectedIndex(5);
+        BitCount.setSelectedIndex(4);
 
         ImportKeysMenu.setText("File");
         ImportKeysMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -217,6 +227,13 @@ public class rsaGUI extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
         
         lblRecipientPublicKey = new JLabel("Recipient Public Key");
+        
+        scrollPane = new JScrollPane();
+        scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JTextArea textArea = new JTextArea();
+        textArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+        scrollPane.setViewportView(textArea);
         GroupLayout groupLayout = new GroupLayout(getContentPane());
         groupLayout.setHorizontalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
@@ -237,13 +254,13 @@ public class rsaGUI extends javax.swing.JFrame {
         					.addGap(12)
         					.addComponent(decryptButton)))
         			.addGap(26)
-        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
         				.addComponent(publicKeyLabel)
-        				.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)
         				.addComponent(privateKeyLabel)
-        				.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)))
+        				.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)))
         		.addGroup(groupLayout.createSequentialGroup()
-        			.addGap(550)
+        			.addGap(434)
         			.addComponent(keyButton))
         		.addGroup(groupLayout.createSequentialGroup()
         			.addGap(22)
@@ -252,7 +269,9 @@ public class rsaGUI extends javax.swing.JFrame {
         			.addComponent(lblRecipientPublicKey))
         		.addGroup(groupLayout.createSequentialGroup()
         			.addGap(22)
-        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE))
+        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+        			.addGap(26)
+        			.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE))
         );
         groupLayout.setVerticalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
@@ -266,9 +285,10 @@ public class rsaGUI extends javax.swing.JFrame {
         					.addGap(5)
         					.addComponent(keysLabel))
         				.addComponent(BitCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGap(6)
+        			.addGap(2)
         			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
         				.addGroup(groupLayout.createSequentialGroup()
+        					.addGap(4)
         					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 327, GroupLayout.PREFERRED_SIZE)
         					.addGap(6)
         					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -276,11 +296,11 @@ public class rsaGUI extends javax.swing.JFrame {
         						.addComponent(decryptButton)))
         				.addGroup(groupLayout.createSequentialGroup()
         					.addComponent(publicKeyLabel)
-        					.addGap(6)
+        					.addGap(10)
         					.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
         					.addGap(6)
         					.addComponent(privateKeyLabel)
-        					.addGap(6)
+        					.addGap(12)
         					.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)))
         			.addGap(6)
         			.addComponent(keyButton)
@@ -289,7 +309,11 @@ public class rsaGUI extends javax.swing.JFrame {
         				.addComponent(outputLabel)
         				.addComponent(lblRecipientPublicKey))
         			.addGap(6)
-        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(groupLayout.createSequentialGroup()
+        					.addGap(6)
+        					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE))))
         );
         getContentPane().setLayout(groupLayout);
 
@@ -495,4 +519,5 @@ public class rsaGUI extends javax.swing.JFrame {
     private javax.swing.JLabel publicKeyLabel;
     private javax.swing.JTextArea publicKeyTextArea;
     private JLabel lblRecipientPublicKey;
+    private JScrollPane scrollPane;
 }
