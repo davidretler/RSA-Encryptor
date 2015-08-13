@@ -33,6 +33,8 @@ import java.math.BigInteger;
  */
 public class Message implements java.io.Serializable {
 
+	
+	
 	/**
 	 * Generated ID
 	 */
@@ -41,13 +43,16 @@ public class Message implements java.io.Serializable {
 	 * Exception to be thrown when user tries to read an encrypted message
 	 */
 	public class MessageEncryptedException extends java.lang.Exception {};
-
+	
 	static Alphabet myAlphabet = new Alphabet(); //static definition of the alphabet
 	
-	BigInteger messageInt;	//message as integer
-	String messageText;     //message as a string
-	Boolean encrypted;		//whether or not the message is currently encrypted
-	int messageHash;		//the hash of the method
+	private BigInteger messageInt;	//message as integer
+	private String messageText;     //message as a string
+	private Boolean encrypted;		//whether or not the message is currently encrypted
+	private int messageHash;		//the hash of the method
+	private Boolean signed = false; //whether the message has been signed
+	private BigInteger signature;   //the signature
+	private BigInteger signee;		//public key of the signee
 	
 	/**
 	 * New blank message
@@ -249,12 +254,60 @@ public class Message implements java.io.Serializable {
 	 * <p>
 	 * Credit to jonathanasdf on Stack Overflow for hashing algorithm
 	 */
-	public void hash()
+	private void hash()
 	{
 		//7 and 31 chosen for being prime numbers
 		int hash = 7;
 		for(int i = 0; i < this.toString().length(); i++) {
 			hash = hash*31 + this.toString().charAt(i);
 		}
+		this.messageHash = hash;
+	}
+	
+	/**
+	 * Signs the message given the keypair of the signee
+	 * <p>
+	 * Encrypts the message hash with the private key. To check signature, the 
+	 * recipient can decrypt the hash with the public key and compare.
+	 * This ensures only the owner of the keypair could have written the message.
+	 * @param publicKey - Public key
+	 * @param privateKey - Private key
+	 * @throws MessageEncryptedException 
+	 */
+	public void sign(BigInteger publicKey, BigInteger privateKey) throws MessageEncryptedException {
+		if(!this.encrypted) {
+			this.hash();
+			BigInteger hash = BigInteger.valueOf(this.messageHash);
+			BigInteger signedHash = RSA.encrypt(hash, privateKey, publicKey); 
+			this.signed = true;
+			this.signature = signedHash;
+			this.signee = publicKey;
+		} else {
+			throw new MessageEncryptedException();
+		}
+	}
+	
+	/**
+	 * Checks the message signature
+	 * @return - Whether or not the signature was valid
+	 * @throws MessageEncryptedException
+	 */
+	public boolean checkSignature() throws MessageEncryptedException {
+		if(!this.encrypted) {
+			this.hash();
+			BigInteger hash = BigInteger.valueOf(this.messageHash);
+			BigInteger allegedHash = RSA.decrypt(this.signature, RSA.e, this.signee);
+			if(hash.equals(allegedHash)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			throw new MessageEncryptedException();
+		}
+	}
+	
+	public BigInteger getSignee() {
+		return this.signee;
 	}
 }

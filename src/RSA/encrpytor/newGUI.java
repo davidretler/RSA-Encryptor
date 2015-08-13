@@ -57,8 +57,8 @@ public class newGUI extends JFrame {
 	private JTextArea PrivateKeyTextArea;
 	private JTextArea RecipientKeyTextArea;
 	public newGUI() {
-		setPreferredSize(new Dimension(688, 400));
-		setSize(new Dimension(688, 400));
+		setPreferredSize(new Dimension(695, 400));
+		setSize(new Dimension(695, 400));
 		setVisible(true);
 		setTitle("RSA Encryption Demo");
 		
@@ -155,10 +155,34 @@ public class newGUI extends JFrame {
 		menuBar.add(mnMessage);
 		
 		JMenuItem mntmSignMessage = new JMenuItem("Sign Message");
+		mntmSignMessage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				signMessage();
+			}
+		});
 		mnMessage.add(mntmSignMessage);
 		
 		JMenuItem mntmCheckSignature = new JMenuItem("Check Signature");
+		mntmCheckSignature.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				checkSignature();
+			}
+		});
 		mnMessage.add(mntmCheckSignature);
+		
+		JSeparator separator_1 = new JSeparator();
+		mnMessage.add(separator_1);
+		
+		JMenuItem mntmClearMessage = new JMenuItem("Clear Message");
+		mntmClearMessage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				clearMessage();
+			}
+		});
+		mnMessage.add(mntmClearMessage);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 		
 		JPanel MainPanel = new JPanel();
@@ -558,7 +582,6 @@ public class newGUI extends JFrame {
         }  
     }
 
-
     /**
      * Displays the message, updating the text areas
      */
@@ -571,6 +594,34 @@ public class newGUI extends JFrame {
     	this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
     }
    
-	
+	/**
+	 * Sign the message
+	 */
+    private void signMessage() {
+		BigInteger publicKey = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
+		BigInteger privateKey = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX);
+		try {
+			message.sign(publicKey, privateKey);
+		} catch (MessageEncryptedException ex) {
+			JOptionPane.showMessageDialog(null, "You can only sign a message before encrypting it.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+    
+    private void checkSignature() {
+    	try { 
+    		if(message.checkSignature()){
+    			JOptionPane.showMessageDialog(null, "Signature verified. Message came from:\n" + message.getSignee().toString(RADIX), "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
+    		} else {
+    			JOptionPane.showMessageDialog(null, "Signature could not be verified.", "Warning", JOptionPane.WARNING_MESSAGE);
+    		}
+    	} catch (MessageEncryptedException ex) {
+    		JOptionPane.showMessageDialog(null, "You must decrypt the message before you can check the signature.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
+    
+    private void clearMessage() {
+    	message = new Message();
+    	displayMessage();
+    }
 }
 

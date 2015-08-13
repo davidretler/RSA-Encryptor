@@ -35,6 +35,9 @@ import java.util.Random;
  */
 public final class RSA {
 
+	/**
+	 * Public exponent
+	 */
     static final BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
 
     /**
