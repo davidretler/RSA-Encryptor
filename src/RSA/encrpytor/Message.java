@@ -43,6 +43,7 @@ public class Message implements java.io.Serializable {
 	 * Exception to be thrown when user tries to read an encrypted message
 	 */
 	public class MessageEncryptedException extends java.lang.Exception {};
+	public class MessageNotSignedException extends java.lang.Exception {};
 	
 	static Alphabet myAlphabet = new Alphabet(); //static definition of the alphabet
 	
@@ -61,7 +62,7 @@ public class Message implements java.io.Serializable {
 		this.messageText = "";
 		this.messageInt = Message.StrtoInt(this.messageText);
 		this.encrypted = false;
-		this.hash();
+		this.signed = false;
 	}
 	
 	/**
@@ -72,7 +73,7 @@ public class Message implements java.io.Serializable {
 		this.messageText = text;
 		this.messageInt = Message.StrtoInt(text);
 		this.encrypted = false;
-		this.hash();
+		this.signed = false;
 	}
 	
 	/**
@@ -83,6 +84,7 @@ public class Message implements java.io.Serializable {
 		this.messageInt = encodedMessage;
 		this.messageText = Message.InttoStr(encodedMessage);
 		this.encrypted = true;
+		this.signed = false;
 	}
 
 	/**
@@ -108,8 +110,10 @@ public class Message implements java.io.Serializable {
 	/**
 	 * Sets the message
 	 * @param messageText - New message text
+	 * @throws MessageEncryptedException 
 	 */
-	public void setMessage(String messageText) {
+	public void setMessage(String messageText) throws MessageEncryptedException {
+		if(this.encrypted) throw new MessageEncryptedException();
 		this.messageText = messageText;
 		this.messageInt = Message.StrtoInt(messageText);
 	}
@@ -117,8 +121,10 @@ public class Message implements java.io.Serializable {
 	/**
 	 * Sets the message
 	 * @param encodedMessage - New message encoded as an integer
+	 * @throws MessageEncryptedException 
 	 */
-	public void setMessage(BigInteger encodedMessage) {
+	public void setMessage(BigInteger encodedMessage) throws MessageEncryptedException {
+		if(this.encrypted) throw new MessageEncryptedException();
 		this.messageInt = encodedMessage;
 		this.messageText = Message.InttoStr(encodedMessage);
 	}
@@ -253,13 +259,13 @@ public class Message implements java.io.Serializable {
 	 * Calculates the value of the message's hash and updates the hash parameter accordingly
 	 * <p>
 	 * Credit to jonathanasdf on Stack Overflow for hashing algorithm
+	 * @throws MessageEncryptedException 
 	 */
-	private void hash()
-	{
+	private void hash() throws MessageEncryptedException {
 		//7 and 31 chosen for being prime numbers
 		int hash = 7;
-		for(int i = 0; i < this.toString().length(); i++) {
-			hash = hash*31 + this.toString().charAt(i);
+		for(int i = 0; i < this.getMessage().length(); i++) {
+			hash = hash*31 + this.getMessage().charAt(i);
 		}
 		this.messageHash = hash;
 	}
@@ -291,15 +297,21 @@ public class Message implements java.io.Serializable {
 	 * Checks the message signature
 	 * @return - Whether or not the signature was valid
 	 * @throws MessageEncryptedException
+	 * @throws MessageNotSignedException 
 	 */
-	public boolean checkSignature() throws MessageEncryptedException {
+	public boolean checkSignature() throws MessageEncryptedException, MessageNotSignedException {
+		if(!this.signed) {
+			throw new MessageNotSignedException();
+		}
 		if(!this.encrypted) {
 			this.hash();
 			BigInteger hash = BigInteger.valueOf(this.messageHash);
 			BigInteger allegedHash = RSA.decrypt(this.signature, RSA.e, this.signee);
 			if(hash.equals(allegedHash)) {
+				System.out.println("Hashes equal\nHash: " + this.messageHash + "\nSigned Hash: " + allegedHash);
 				return true;
 			} else {
+				System.out.println("Hashes not equal\nHash: " + this.messageHash + "\nSigned Hash: " + allegedHash);
 				return false;
 			}
 		} else {

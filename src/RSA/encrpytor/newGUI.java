@@ -1,10 +1,7 @@
 package RSA.encrpytor;
 
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.RadioButtonBuilder;
 
 import javax.swing.*;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -12,9 +9,13 @@ import java.awt.Component;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.Document;
 
 import RSA.encrpytor.Message.MessageEncryptedException;
+import RSA.encrpytor.Message.MessageNotSignedException;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -36,6 +37,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class newGUI extends JFrame {
 	
@@ -126,7 +131,7 @@ public class newGUI extends JFrame {
 		mntmGenerateKeys.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				keyButtonActionPerformed();
+				generateKeys();
 			}
 		});
 		mnKeys.add(mntmGenerateKeys);
@@ -239,7 +244,7 @@ public class newGUI extends JFrame {
 		btnEncrypt.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				encryptButtonActionPerformed();
+				encryptMessage();
 			}
 		});
 		MessageButtonsPanel.add(btnEncrypt);
@@ -248,7 +253,7 @@ public class newGUI extends JFrame {
 		btnDecrypt.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				decryptButtonActionPerformed();
+				decryptMessage();
 			}
 		});
 		MessageButtonsPanel.add(btnDecrypt);
@@ -377,10 +382,13 @@ public class newGUI extends JFrame {
 	 * Encrypts the message in the text area, writing it to the other text area
 	 * @param evt
 	 */
-	private void encryptButtonActionPerformed() {
-	    // TODO add your handling code here:
+	private void encryptMessage() {
 	    String text = MessageTextArea.getText();
-	    message = new Message(text);
+	    try {
+	    	message.setMessage(this.MessageTextArea.getText());
+	    } catch (MessageEncryptedException ex) {
+	    	JOptionPane.showMessageDialog(null, "This message is already encrypted.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
 	    if(!this.RecipientKeyTextArea.getText().equals("")) {
 	    	keys[0] = new BigInteger(this.RecipientKeyTextArea.getText(),RADIX);
 	    	message.Encrypt(keys[0]);
@@ -390,19 +398,16 @@ public class newGUI extends JFrame {
 	    else {
 	    	JOptionPane.showMessageDialog(null, "You need to enter the recipient's public key to encrypt.","Error", JOptionPane.ERROR_MESSAGE);
 	    }
-	    
-	    
-	    
 	}
 	
 	/**
 	 * Decrypts the message
 	 * @param evt
 	 */
-	private void decryptButtonActionPerformed() {
+	private void decryptMessage() {
 	    String text = this.EncodedMessageTextArea.getText();
 	    BigInteger textInt = new BigInteger(text,RADIX);
-	    message = new Message(textInt);
+	    
 	    if(!this.PublicKeyTextArea.getText().equals("") && !this.PrivateKeyTextArea.getText().equals("")) {
 	    	keys[0] = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
 	    	keys[1] = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX); 
@@ -418,8 +423,7 @@ public class newGUI extends JFrame {
 	 * Generates keys
 	 * @param evt
 	 */
-	private void keyButtonActionPerformed() {
-	    // TODO add your handling code here:
+	private void generateKeys() {
 	    try {
 	    	keySize = getKeySize();
 	    } catch (NoKeySizeSelectedException ex){
@@ -601,7 +605,9 @@ public class newGUI extends JFrame {
 		BigInteger publicKey = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
 		BigInteger privateKey = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX);
 		try {
+			message.setMessage(this.MessageTextArea.getText());
 			message.sign(publicKey, privateKey);
+			JOptionPane.showMessageDialog(null, "Message signed sucessfully.", "Message Signed", JOptionPane.INFORMATION_MESSAGE);
 		} catch (MessageEncryptedException ex) {
 			JOptionPane.showMessageDialog(null, "You can only sign a message before encrypting it.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -616,12 +622,23 @@ public class newGUI extends JFrame {
     		}
     	} catch (MessageEncryptedException ex) {
     		JOptionPane.showMessageDialog(null, "You must decrypt the message before you can check the signature.", "Error", JOptionPane.ERROR_MESSAGE);
+    	} catch (MessageNotSignedException ex) {
+    		JOptionPane.showMessageDialog(null, "The message was not signed.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     }
     
     private void clearMessage() {
     	message = new Message();
     	displayMessage();
+    }
+    
+    private void updateMessageText() {
+    	try {
+    		message.setMessage(this.MessageTextArea.getText());
+    	} catch (MessageEncryptedException ex) {
+    		JOptionPane.showMessageDialog(null, "You cannot edit the message while it is encrypted.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    	System.out.println("Message updated");
     }
 }
 
