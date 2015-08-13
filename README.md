@@ -1,32 +1,36 @@
 #RSA-Encryptor
-
+By David and Chris Etler
 ##Overview
 This is an RSA encryption program my brother and I wrote for a Discrete Math honors project.
 
 ##Features
 This program implements the following aspects of RSA encryption:
 
-* Key generation
-* Plain-text message encryption
-* Message decryption
-* Supports various different key sizes
+* Key generation with various different key sizes
+* Encryption and decryption of small messages
+* Message hashing and signing
 * Saving keys and messages to files for transfer and storage
+* Rich GUI giving access to all these features
 
 The software comes with a command-line front-end as well as a GUI.
 
 ##How to Run
-You can run the program by downloading the `.jar`s in the [`bin/v1`](bin/v1) directory. The program comes separately as a [GUI](bin/v1/RSA_GUI.jar) and a [CLI](bin/v1/RSA_CLI.jar) frontend. 
+You can run the program by downloading the `.jar` in the [`build/v2`](build/v2) directory. The program comes as a [GUI](build/v2/RSA_demo.jar). Previously, the program came with an optional CLI, but that has been deprecated and is no longer being updated.
 
-For example, to run the GUI you would type:
-
-    java -jar ./RSA_GUI.jar
-
-in the directory `RSA_GUI` was downloaded to.
+To run the program, use the command: `java -jar RSA_demo.jar` in the directory of the program.
 
 ##Screenshots
-Here are a couple screenshots
-![GUI](Screenshots/RSA-screenshot.png)
-![CLI](Screenshots/cli-screenshot.png)
+Overall interface:
+
+![GUI](Screenshots/Screenshot 2.png)
+
+Encrypted message:
+
+![Encrypted](Screenshots/Encrypted.png)
+
+Message decrypted:
+
+![Decrypted](Screenshots/Decrypted.png)
 
 
 ##Disclaimer
