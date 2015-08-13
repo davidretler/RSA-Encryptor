@@ -4,7 +4,7 @@ package RSA.encrpytor;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import RSA.encrpytor.rsaGUI;
+import RSA.encrpytor.newGUI;
 
 /**
  * 	Driver Class for the GUI
@@ -15,8 +15,11 @@ public class GUIDriver {
 	{
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		
-		rsaGUI gui = new rsaGUI();
+		newGUI gui = new newGUI();
         
+		//center UI and make visible
+		gui.pack();
+		gui.setLocationRelativeTo(null);
         gui.setVisible(true);
 		
 	}

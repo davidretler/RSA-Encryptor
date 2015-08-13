@@ -37,12 +37,17 @@ public class Message implements java.io.Serializable {
 	 * Generated ID
 	 */
 	private static final long serialVersionUID = 3919067545339606603L;
+	/**
+	 * Exception to be thrown when user tries to read an encrypted message
+	 */
+	public class MessageEncryptedException extends java.lang.Exception {};
 
 	static Alphabet myAlphabet = new Alphabet(); //static definition of the alphabet
 	
 	BigInteger messageInt;	//message as integer
 	String messageText;     //message as a string
 	Boolean encrypted;		//whether or not the message is currently encrypted
+	int messageHash;		//the hash of the method
 	
 	/**
 	 * New blank message
@@ -51,20 +56,22 @@ public class Message implements java.io.Serializable {
 		this.messageText = "";
 		this.messageInt = Message.StrtoInt(this.messageText);
 		this.encrypted = false;
+		this.hash();
 	}
 	
 	/**
-	 * Create a new Message from the messages text
+	 * Create a new Message from the messages text, assumed to be plaintext
 	 * @param text - Message text
 	 */
 	public Message(String text) {
 		this.messageText = text;
 		this.messageInt = Message.StrtoInt(text);
 		this.encrypted = false;
+		this.hash();
 	}
 	
 	/**
-	 * Create message from encoded integer
+	 * Create message from encoded integer, assumed to be an encrypted message
 	 * @param encodedMessage - Encoded message
 	 */
 	public Message(BigInteger encodedMessage) {
@@ -74,10 +81,16 @@ public class Message implements java.io.Serializable {
 	}
 
 	/**
-	 * Message as a string
+	 * Get the message as a string
+	 * @return - The message
+	 * @throws MessageEncryptedException if the message is encrypted
 	 */
-	public String toString() {
-		return messageText;
+	public String getMessage() throws MessageEncryptedException {
+		if(!this.encrypted) {
+			return this.messageText;
+		} else {
+			throw new MessageEncryptedException();
+		}
 	}
 	
 	/**
@@ -229,6 +242,19 @@ public class Message implements java.io.Serializable {
 		
 		
 		return output;
-
+	}
+	
+	/**
+	 * Calculates the value of the message's hash and updates the hash parameter accordingly
+	 * <p>
+	 * Credit to jonathanasdf on Stack Overflow for hashing algorithm
+	 */
+	public void hash()
+	{
+		//7 and 31 chosen for being prime numbers
+		int hash = 7;
+		for(int i = 0; i < this.toString().length(); i++) {
+			hash = hash*31 + this.toString().charAt(i);
+		}
 	}
 }

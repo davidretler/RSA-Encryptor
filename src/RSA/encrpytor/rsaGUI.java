@@ -24,6 +24,9 @@ import java.util.logging.Logger;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import RSA.encrpytor.Message.MessageEncryptedException;
+
 import java.awt.TextArea;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -118,7 +121,7 @@ public class rsaGUI extends javax.swing.JFrame {
 
         messageLabel.setText("Plaintext Message:");
 
-        outputLabel.setText("Encrypted Message:");
+        outputLabel.setText("Encoded Message:");
 
         messageTextArea.setColumns(20);
         messageTextArea.setLineWrap(true);
@@ -288,14 +291,13 @@ public class rsaGUI extends javax.swing.JFrame {
         			.addComponent(keyButton))
         		.addGroup(groupLayout.createSequentialGroup()
         			.addGap(22)
-        			.addComponent(outputLabel)
-        			.addGap(256)
-        			.addComponent(lblRecipientPublicKey))
-        		.addGroup(groupLayout.createSequentialGroup()
-        			.addGap(22)
-        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(outputLabel))
         			.addGap(26)
-        			.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE))
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(lblRecipientPublicKey)
+        				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)))
         );
         groupLayout.setVerticalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
@@ -329,7 +331,7 @@ public class rsaGUI extends javax.swing.JFrame {
         			.addGap(6)
         			.addComponent(keyButton)
         			.addGap(6)
-        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(outputLabel)
         				.addComponent(lblRecipientPublicKey))
         			.addGap(6)
@@ -356,7 +358,7 @@ public class rsaGUI extends javax.swing.JFrame {
         	keys[0] = new BigInteger(recipientPublicKey.getText(),RADIX);
         	message.Encrypt(keys[0]);
         	outputTextArea.setText(message.toInt().toString(RADIX));
-        	messageTextArea.setText(message.toString());
+        	displayMessage();
         }
         else {
         	JOptionPane.showMessageDialog(null, "You need to enter a public key to encrypt.","Error", JOptionPane.ERROR_MESSAGE);
@@ -378,7 +380,7 @@ public class rsaGUI extends javax.swing.JFrame {
         	keys[0] = new BigInteger(publicKeyTextArea.getText(), RADIX);
         	keys[1] = new BigInteger(privateKeyTextArea.getText(), RADIX); 
         	message.Decrypt(keys[0], keys[1]);
-            messageTextArea.setText(message.toString());
+            displayMessage();
         } else {
         	JOptionPane.showMessageDialog(null, "You need to enter a public and private keypair to decrypt.","Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -560,7 +562,11 @@ public class rsaGUI extends javax.swing.JFrame {
      * Displays the message, updating the text areas
      */
     private void displayMessage() {
-    	messageTextArea.setText(message.toString());
+    	try {
+        	messageTextArea.setText(message.getMessage());
+        } catch (MessageEncryptedException ex) {
+        	messageTextArea.setText("Message Encrypted");
+        }
     	outputTextArea.setText(message.toInt().toString(RADIX));
     }
     
@@ -575,7 +581,7 @@ public class rsaGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("GTK+".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
