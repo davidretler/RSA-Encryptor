@@ -14,8 +14,8 @@ import java.awt.Rectangle;
 public class newGUI extends JFrame {
 	private final ButtonGroup KeySizeButtonGroup = new ButtonGroup();
 	public newGUI() {
-		setPreferredSize(new Dimension(680, 400));
-		setSize(new Dimension(680, 400));
+		setPreferredSize(new Dimension(688, 400));
+		setSize(new Dimension(688, 400));
 		setVisible(true);
 		setTitle("RSA Encryption Demo");
 		
@@ -70,6 +70,15 @@ public class newGUI extends JFrame {
 		JRadioButtonMenuItem radioButtonMenuItem_3 = new JRadioButtonMenuItem("4096");
 		KeySizeButtonGroup.add(radioButtonMenuItem_3);
 		mnKeySize.add(radioButtonMenuItem_3);
+		
+		JMenu mnMessage = new JMenu("Message");
+		menuBar.add(mnMessage);
+		
+		JMenuItem mntmSignMessage = new JMenuItem("Sign Message");
+		mnMessage.add(mntmSignMessage);
+		
+		JMenuItem mntmCheckSignature = new JMenuItem("Check Signature");
+		mnMessage.add(mntmCheckSignature);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 		
 		JPanel MainPanel = new JPanel();
@@ -115,7 +124,7 @@ public class newGUI extends JFrame {
 		MessageScrollPane.setViewportView(MessageTextArea);
 		
 		JPanel MessageButtonsPanel = new JPanel();
-		MessageButtonsPanel.setBounds(10, 138, 334, 55);
+		MessageButtonsPanel.setBounds(10, 138, 321, 55);
 		MessageButtonsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		MessageButtonsPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		MessageButtonsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -205,7 +214,7 @@ public class newGUI extends JFrame {
 		PrivateKeyLabelPanel.add(lblPrivateKey);
 		
 		JPanel PrivateKeyTextPanel = new JPanel();
-		PrivateKeyTextPanel.setBounds(2, 26, 167, 164);
+		PrivateKeyTextPanel.setBounds(2, 27, 167, 163);
 		PrivateKeyPanel.add(PrivateKeyTextPanel);
 		PrivateKeyTextPanel.setLayout(new BoxLayout(PrivateKeyTextPanel, BoxLayout.X_AXIS));
 		
@@ -219,5 +228,26 @@ public class newGUI extends JFrame {
 		JPanel RecipientKeysPanel = new JPanel();
 		RecipientKeysPanel.setBounds(0, 191, 339, 160);
 		RightPanel.add(RecipientKeysPanel);
+		RecipientKeysPanel.setLayout(null);
+		
+		JPanel RecipientKeyLabel = new JPanel();
+		RecipientKeyLabel.setBounds(0, 0, 339, 23);
+		RecipientKeysPanel.add(RecipientKeyLabel);
+		RecipientKeyLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		JLabel lblRecipientPublicKey = new JLabel("Recipient Public Key");
+		RecipientKeyLabel.add(lblRecipientPublicKey);
+		
+		JPanel RecipientKeyTextPanel = new JPanel();
+		RecipientKeyTextPanel.setBounds(0, 26, 338, 122);
+		RecipientKeysPanel.add(RecipientKeyTextPanel);
+		RecipientKeyTextPanel.setLayout(new BoxLayout(RecipientKeyTextPanel, BoxLayout.X_AXIS));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		RecipientKeyTextPanel.add(scrollPane_1);
+		
+		JTextArea textArea_2 = new JTextArea();
+		scrollPane_1.setViewportView(textArea_2);
 	}
 }
