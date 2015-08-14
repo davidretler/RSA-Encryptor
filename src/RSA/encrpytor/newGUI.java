@@ -37,19 +37,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class newGUI extends JFrame {
     
     private class NoKeySizeSelectedException extends Exception {};
     
-    private RSA myRSA = new RSA();
     private BigInteger[] keys = new BigInteger[2];
     private final int RADIX = Character.MAX_RADIX;
-    private BigInteger e = BigInteger.valueOf((1 << (1 << 4)) + 1);
     private Message message = new Message();
     private int keySize = 2048;
     private File keyImport;
@@ -384,7 +378,6 @@ public class newGUI extends JFrame {
      * @param evt
      */
     private void encryptMessage() {
-        String text = MessageTextArea.getText();
         try {
             message.setMessage(this.MessageTextArea.getText());
         } catch (MessageEncryptedException ex) {
@@ -406,9 +399,6 @@ public class newGUI extends JFrame {
      * @param evt
      */
     private void decryptMessage() {
-        String text = this.EncodedMessageTextArea.getText();
-        BigInteger textInt = new BigInteger(text,RADIX);
-        
         if(!this.PublicKeyTextArea.getText().equals("") && !this.PrivateKeyTextArea.getText().equals("")) {
             keys[0] = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
             keys[1] = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX); 
@@ -417,7 +407,6 @@ public class newGUI extends JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "You need to enter a public and private keypair to decrypt.","Error", JOptionPane.ERROR_MESSAGE);
         }
-        
     }
     
     /**
@@ -431,7 +420,7 @@ public class newGUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Please select a key size before generating key.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        keys = myRSA.generateKey(keySize/2);
+        keys = RSA.generateKey(keySize/2);
         this.PublicKeyTextArea.setText(keys[0].toString(RADIX));
         this.PrivateKeyTextArea.setText(keys[1].toString(RADIX));
     }
@@ -588,29 +577,39 @@ public class newGUI extends JFrame {
     }
 
     /**
-     * Displays the message, updating the text areas
+     * Displays the message, updating the text areas. If message is encrypted, make sure the user cannot edit the message text.
      */
     private void displayMessage() {
         try {
             this.MessageTextArea.setText(message.getMessage());
+            //only display encoded text if message is not blank; otherwise keep encoded text blank as well
+            if(!message.getMessage().equals("")) {
+                this.EncodedMessageTextArea.setText("");
+            } else {
+                this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
+            }
+            this.MessageTextArea.setEditable(true);
         } catch (MessageEncryptedException ex) {
             this.MessageTextArea.setText("Message Encrypted");
+            this.MessageTextArea.setEditable(false);
+            this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
         }
-        this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
     }
    
     /**
      * Sign the message
      */
     private void signMessage() {
-        BigInteger publicKey = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
-        BigInteger privateKey = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX);
         try {
+            BigInteger publicKey = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
+            BigInteger privateKey = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX);
             message.setMessage(this.MessageTextArea.getText());
             message.sign(publicKey, privateKey);
             JOptionPane.showMessageDialog(null, "Message signed sucessfully.", "Message Signed", JOptionPane.INFORMATION_MESSAGE);
         } catch (MessageEncryptedException ex) {
             JOptionPane.showMessageDialog(null, "You can only sign a message before encrypting it.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (java.lang.NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "You can only sign a message if you have entered a valid public/private keypair.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     

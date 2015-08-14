@@ -50,7 +50,7 @@ public class Message implements java.io.Serializable {
     private BigInteger messageInt;  //message as integer
     private String messageText;     //message as a string
     private Boolean encrypted;      //whether or not the message is currently encrypted
-    private int messageHash;        //the hash of the method
+    private BigInteger messageHash; //the hash of the method
     private Boolean signed = false; //whether the message has been signed
     private BigInteger signature;   //the signature
     private BigInteger signee;      //public key of the signee
@@ -263,9 +263,9 @@ public class Message implements java.io.Serializable {
      */
     private void hash() throws MessageEncryptedException {
         //7 and 31 chosen for being prime numbers
-        int hash = 7;
+        BigInteger hash = BigInteger.valueOf(7);
         for(int i = 0; i < this.getMessage().length(); i++) {
-            hash = hash*31 + this.getMessage().charAt(i);
+            hash = hash.multiply(BigInteger.valueOf(31)).add(BigInteger.valueOf(this.getMessage().charAt(i)));
         }
         this.messageHash = hash;
     }
@@ -283,11 +283,12 @@ public class Message implements java.io.Serializable {
     public void sign(BigInteger publicKey, BigInteger privateKey) throws MessageEncryptedException {
         if(!this.encrypted) {
             this.hash();
-            BigInteger hash = BigInteger.valueOf(this.messageHash);
-            BigInteger signedHash = RSA.encrypt(hash, privateKey, publicKey); 
+            BigInteger signedHash = RSA.encrypt(this.messageHash, privateKey, publicKey); 
             this.signed = true;
             this.signature = signedHash;
             this.signee = publicKey;
+            
+            System.out.println("Message signed! Hash: " + this.messageHash);
         } else {
             throw new MessageEncryptedException();
         }
@@ -305,9 +306,8 @@ public class Message implements java.io.Serializable {
         }
         if(!this.encrypted) {
             this.hash();
-            BigInteger hash = BigInteger.valueOf(this.messageHash);
             BigInteger allegedHash = RSA.decrypt(this.signature, RSA.e, this.signee);
-            if(hash.equals(allegedHash)) {
+            if(this.messageHash.equals(allegedHash)) {
                 System.out.println("Hashes equal\nHash: " + this.messageHash + "\nSigned Hash: " + allegedHash);
                 return true;
             } else {
