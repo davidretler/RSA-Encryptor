@@ -15,9 +15,9 @@ This program implements the following aspects of RSA encryption:
 The software comes with a command-line front-end as well as a GUI.
 
 ##How to Run
-You can run the program by downloading the `.jar` in the [`build/v2`](build/v2) directory. The program comes as a [GUI](build/v2/RSA_demo.jar). Previously, the program came with an optional CLI, but that has been deprecated and is no longer being updated.
+You can run the program by downloading the `.jar` in the [`build/v2`](build/v2.1) directory. The program comes as a [GUI](build/v2.1/RSA_demo.jar). Previously, the program came with an optional CLI, but that has been deprecated and is no longer being updated.
 
-To run the program, use the command: `java -jar RSA_demo.jar` in the directory of the program.
+To run the program, use the command: `java -jar RSA_Demo.jar` in the directory of the program. If this version does not run correctly, try the legacy version (`RSA_Demo_Legacy`) which is compiled for older versions of JRE.
 
 ##Screenshots
 Overall interface:
