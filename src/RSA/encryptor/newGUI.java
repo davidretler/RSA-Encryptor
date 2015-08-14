@@ -466,7 +466,6 @@ public class newGUI extends JFrame {
                  myOOS.close();
                  myFOS.close();
             } catch (IOException ex){
-                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Saving message to file failed.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -491,10 +490,8 @@ public class newGUI extends JFrame {
                 myOIS.close();
                 displayMessage();
             } catch (IOException ex) {
-                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Reading message from file failed.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "An unexpected error occurred.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -531,7 +528,7 @@ public class newGUI extends JFrame {
                 writer.write(toWrite);
                 writer.close();
             } catch (IOException ex) {
-                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "The key file could not be saved due to an i/o exception.", "Something went Wrong", JOptionPane.ERROR_MESSAGE);
             }
                
         }
@@ -557,7 +554,7 @@ public class newGUI extends JFrame {
             try {
                 reader = new FileReader(keyLocation);
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "The file selected does not seem to exist.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             BufferedReader file = new BufferedReader(reader);
             
@@ -572,7 +569,7 @@ public class newGUI extends JFrame {
                 this.PrivateKeyTextArea.setText(keys[1].toString(RADIX));
                 file.close();
             } catch (IOException ex) {
-                Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "The key file could not be saved due to an i/o exception.", "Something went Wrong", JOptionPane.ERROR_MESSAGE);
             }
             
         }  
@@ -639,17 +636,4 @@ public class newGUI extends JFrame {
         message = new Message();
         displayMessage();
     }
-    
-    /**
-     * Updates the contents of the message based on the text in the message text area
-     */
-    private void updateMessageText() {
-        try {
-            message.setMessage(this.MessageTextArea.getText());
-        } catch (MessageEncryptedException ex) {
-            JOptionPane.showMessageDialog(null, "You cannot edit the message while it is encrypted.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        System.out.println("Message updated");
-    }
 }
-
