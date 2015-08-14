@@ -449,6 +449,7 @@ public class newGUI extends JFrame {
      */
     private void saveMessage() {
         JFileChooser jFileChooser1 = new JFileChooser();
+        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Message File (*.msg)","msg"));
         int returnVal = jFileChooser1.showSaveDialog(this);
         //if the user hit "save"
         if(returnVal == JFileChooser.APPROVE_OPTION) {
@@ -477,6 +478,7 @@ public class newGUI extends JFrame {
      */
     private void openMessage() {
         JFileChooser jFileChooser1 = new JFileChooser();
+        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Message File (*.msg)","msg"));
         int returnVal = jFileChooser1.showOpenDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             String fileName = jFileChooser1.getSelectedFile().toString();
@@ -493,7 +495,7 @@ public class newGUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Reading message from file failed.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(rsaGUI.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "An unexpected error occured.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "An unexpected error occurred.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -505,8 +507,7 @@ public class newGUI extends JFrame {
     private void saveKeys() {
         Writer writer;
         JFileChooser jFileChooser1 = new JFileChooser();
-        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)","txt"));
-        jFileChooser1.addChoosableFileFilter(new FileNameExtensionFilter("Key File (*.key)","key"));
+        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Key File (*.key)","key"));
         int returnVal = jFileChooser1.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION){
             String fileName = jFileChooser1.getSelectedFile().toString();
@@ -544,6 +545,7 @@ public class newGUI extends JFrame {
     private void openKeys() {
        
         JFileChooser jFileChooser1 = new JFileChooser();
+        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Key File (*.key)","key"));
         int returnVal = jFileChooser1.showOpenDialog(this);
         //Opens the Text file with keys and uses the first two lines as the public and private
         //key respectively
@@ -605,7 +607,7 @@ public class newGUI extends JFrame {
             BigInteger privateKey = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX);
             message.setMessage(this.MessageTextArea.getText());
             message.sign(publicKey, privateKey);
-            JOptionPane.showMessageDialog(null, "Message signed sucessfully.", "Message Signed", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Message signed successfully.", "Message Signed", JOptionPane.INFORMATION_MESSAGE);
         } catch (MessageEncryptedException ex) {
             JOptionPane.showMessageDialog(null, "You can only sign a message before encrypting it.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (java.lang.NumberFormatException ex) {
