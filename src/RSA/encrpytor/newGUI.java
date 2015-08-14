@@ -614,6 +614,9 @@ public class newGUI extends JFrame {
         }
     }
     
+    /**
+     * Check the signature, to confirm the identity of the sender
+     */
     private void checkSignature() {
         try { 
             if(message.checkSignature()){
@@ -628,11 +631,17 @@ public class newGUI extends JFrame {
         }
     }
     
+    /**
+     * Clear the message and update the text areas accordingly
+     */
     private void clearMessage() {
         message = new Message();
         displayMessage();
     }
     
+    /**
+     * Updates the contents of the message based on the text in the message text area
+     */
     private void updateMessageText() {
         try {
             message.setMessage(this.MessageTextArea.getText());
