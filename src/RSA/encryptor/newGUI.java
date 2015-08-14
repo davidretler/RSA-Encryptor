@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Document;
 
 import RSA.encryptor.Message.MessageEncryptedException;
+import RSA.encryptor.Message.MessageNotEncryptedException;
 import RSA.encryptor.Message.MessageNotSignedException;
 
 import java.awt.Color;
@@ -380,17 +381,14 @@ public class newGUI extends JFrame {
     private void encryptMessage() {
         try {
             message.setMessage(this.MessageTextArea.getText());
-        } catch (MessageEncryptedException ex) {
-            JOptionPane.showMessageDialog(null, "This message is already encrypted.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        if(!this.RecipientKeyTextArea.getText().equals("")) {
             keys[0] = new BigInteger(this.RecipientKeyTextArea.getText(),RADIX);
             message.Encrypt(keys[0]);
             this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
             displayMessage();
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "You need to enter the recipient's public key to encrypt.","Error", JOptionPane.ERROR_MESSAGE);
+        } catch (MessageEncryptedException ex) {
+            JOptionPane.showMessageDialog(null, "This message is already encrypted.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (java.lang.NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "You must enter the public key of the recipient to encrypt.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -399,14 +397,19 @@ public class newGUI extends JFrame {
      * @param evt
      */
     private void decryptMessage() {
-        if(!this.PublicKeyTextArea.getText().equals("") && !this.PrivateKeyTextArea.getText().equals("")) {
+    
+        try{
             keys[0] = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
             keys[1] = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX); 
             message.Decrypt(keys[0], keys[1]);
             displayMessage();
-        } else {
+        } catch (MessageNotEncryptedException ex) {
+            JOptionPane.showMessageDialog(null, "The message is not encrypted.","Error", JOptionPane.ERROR_MESSAGE);
+
+        } catch (java.lang.NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "You need to enter a public and private keypair to decrypt.","Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
     
     /**
@@ -416,13 +419,13 @@ public class newGUI extends JFrame {
     private void generateKeys() {
         try {
             keySize = getKeySize();
+            keys = RSA.generateKey(keySize/2);
+            this.PublicKeyTextArea.setText(keys[0].toString(RADIX));
+            this.PrivateKeyTextArea.setText(keys[1].toString(RADIX));
         } catch (NoKeySizeSelectedException ex){
             JOptionPane.showMessageDialog(null, "Please select a key size before generating key.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        keys = RSA.generateKey(keySize/2);
-        this.PublicKeyTextArea.setText(keys[0].toString(RADIX));
-        this.PrivateKeyTextArea.setText(keys[1].toString(RADIX));
     }
         
     /**
@@ -509,7 +512,7 @@ public class newGUI extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION){
             String fileName = jFileChooser1.getSelectedFile().toString();
             
-            //Thank you to user59600 on StackOverflow for coming with this method of obtaining the extention from the FileFilter.
+            //Thank you to user59600 on StackOverflow for coming with this method of obtaining the extension from the FileFilter.
             String ext = jFileChooser1.getFileFilter().toString().replaceFirst(".*extensions=\\[(.*)]]", ".$1").replaceFirst(".*AcceptAllFileFilter.*", "");
             
             
@@ -634,6 +637,7 @@ public class newGUI extends JFrame {
      */
     private void clearMessage() {
         message = new Message();
-        displayMessage();
+        this.MessageTextArea.setText("");
+        this.EncodedMessageTextArea.setText("");
     }
 }

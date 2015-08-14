@@ -43,7 +43,14 @@ public class Message implements java.io.Serializable {
      * Exception to be thrown when user tries to read an encrypted message
      */
     public class MessageEncryptedException extends java.lang.Exception {};
+    /**
+     * Thrown if the message is not signed, when it should be
+     */
     public class MessageNotSignedException extends java.lang.Exception {};
+    /**
+     * Thrown if user tries to decrypt a non-encrypted message
+     */
+    public class MessageNotEncryptedException extends java.lang.Exception {};
     
     static Alphabet myAlphabet = new Alphabet(); //static definition of the alphabet
     
@@ -143,8 +150,10 @@ public class Message implements java.io.Serializable {
      * Decrypts the message, given the keypair
      * @param pq - Public key
      * @param d - Private key
+     * @throws MessageNotEncryptedException 
      */
-    public void Decrypt(BigInteger pq, BigInteger d) {
+    public void Decrypt(BigInteger pq, BigInteger d) throws MessageNotEncryptedException {
+        if(!this.encrypted) throw new MessageNotEncryptedException();
         this.messageInt = RSA.decrypt(this.messageInt, d, pq);
         this.messageText = Message.InttoStr(this.messageInt);
         this.encrypted = false;
