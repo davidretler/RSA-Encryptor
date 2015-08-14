@@ -1,11 +1,11 @@
-package RSA.encrpytor;
+package RSA.encryptor;
 
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
-import RSA.encrpytor.newGUI;
+import RSA.encryptor.newGUI;
 
 /**
  * Driver Class for the GUI

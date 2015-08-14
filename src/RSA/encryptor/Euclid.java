@@ -17,7 +17,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  */
-package RSA.encrpytor;
+package RSA.encryptor;
 
 import java.math.BigInteger;
 import java.util.Scanner;

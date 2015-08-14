@@ -1,4 +1,4 @@
-package RSA.encrpytor;
+package RSA.encryptor;
 
 
 import javax.swing.*;
@@ -14,8 +14,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Document;
 
-import RSA.encrpytor.Message.MessageEncryptedException;
-import RSA.encrpytor.Message.MessageNotSignedException;
+import RSA.encryptor.Message.MessageEncryptedException;
+import RSA.encryptor.Message.MessageNotSignedException;
 
 import java.awt.Color;
 import java.awt.Rectangle;

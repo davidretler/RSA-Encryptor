@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RSA.encrpytor;
+package RSA.encryptor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import RSA.encrpytor.Message.MessageEncryptedException;
+import RSA.encryptor.Message.MessageEncryptedException;
 
 import java.awt.TextArea;
 import java.awt.Component;
