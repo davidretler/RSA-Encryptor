@@ -48,7 +48,7 @@ public class Euclid {
 
 
 
-    	Scanner scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
         //File to say the key
         File keyFile = new File("key.txt");
         BufferedReader keyReader;
