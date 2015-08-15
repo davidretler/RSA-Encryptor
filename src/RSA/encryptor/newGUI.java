@@ -37,7 +37,6 @@ public class newGUI extends JFrame {
     
     private class NoKeySizeSelectedException extends Exception {};
     
-    private BigInteger[] keys = new BigInteger[2];
     private final int RADIX = Character.MAX_RADIX;
     private Message message = new Message();
     private int keySize = 2048;
@@ -377,8 +376,8 @@ public class newGUI extends JFrame {
     private void encryptMessage() {
         try {
             message.setMessage(this.MessageTextArea.getText());
-            keys[0] = new BigInteger(this.RecipientKeyTextArea.getText(),RADIX);
-            message.Encrypt(keys[0]);
+            BigInteger key = this.getRecipientKey();
+            message.Encrypt(key);
             this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
             displayMessage();
         } catch (MessageEncryptedException ex) {
@@ -394,9 +393,9 @@ public class newGUI extends JFrame {
     private void decryptMessage() {
     
         try{
-            keys[0] = new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
-            keys[1] = new BigInteger(this.PrivateKeyTextArea.getText(), RADIX); 
-            message.Decrypt(keys[0], keys[1]);
+            BigInteger pubKey = this.getPublicKey();
+            BigInteger privKey = this.getPrivateKey();
+            message.Decrypt(pubKey, privKey);
             displayMessage();
         } catch (MessageNotEncryptedException ex) {
             JOptionPane.showMessageDialog(null, "The message is not encrypted.","Error", JOptionPane.ERROR_MESSAGE);
@@ -413,7 +412,7 @@ public class newGUI extends JFrame {
     private void generateKeys() {
         try {
             keySize = getKeySize();
-            keys = RSA.generateKey(keySize/2);
+            BigInteger[] keys = RSA.generateKey(keySize/2);
             this.PublicKeyTextArea.setText(keys[0].toString(RADIX));
             this.PrivateKeyTextArea.setText(keys[1].toString(RADIX));
         } catch (NoKeySizeSelectedException ex){
@@ -554,6 +553,7 @@ public class newGUI extends JFrame {
             String line;
             int i=0;
             try {
+                BigInteger keys[] = {null,null};
                 while(((line = file.readLine()) != null) && i<2){                    
                     keys[i] = new BigInteger(line,RADIX);
                     i++;
@@ -629,5 +629,29 @@ public class newGUI extends JFrame {
         message = new Message();
         this.MessageTextArea.setText("");
         this.EncodedMessageTextArea.setText("");
+    }
+    
+    /**
+     * Get the public key entered
+     * @return - public key
+     */
+    private BigInteger getPublicKey() {
+        return new BigInteger(this.PublicKeyTextArea.getText(), RADIX);
+    }
+    
+    /**
+     * Get the private key entered
+     * @return - private key
+     */
+    private BigInteger getPrivateKey() {
+        return new BigInteger(this.PrivateKeyTextArea.getText(), RADIX);
+    }
+    
+    /**
+     * Get the public key of the intended recipient
+     * @return - recipient public key
+     */
+    private BigInteger getRecipientKey() {
+        return new BigInteger(this.RecipientKeyTextArea.getText(), RADIX);
     }
 }
