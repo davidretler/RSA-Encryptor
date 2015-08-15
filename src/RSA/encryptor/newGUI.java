@@ -2,17 +2,13 @@ package RSA.encryptor;
 
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Component;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.Document;
 
 import RSA.encryptor.Message.MessageEncryptedException;
 import RSA.encryptor.Message.MessageNotEncryptedException;
@@ -34,10 +30,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class newGUI extends JFrame {
     
@@ -73,18 +67,18 @@ public class newGUI extends JFrame {
         menuBar.add(mnFi);
         
         JMenuItem mntmImportKey = new JMenuItem("Import Keys");
-        mntmImportKey.addMouseListener(new MouseAdapter() {
+        mntmImportKey.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 openKeys();
             }
         });
         mnFi.add(mntmImportKey);
         
         JMenuItem mntmExportKey = new JMenuItem("Export Keys");
-        mntmExportKey.addMouseListener(new MouseAdapter() {
+        mntmExportKey.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 saveKeys();
             }
         });
@@ -94,18 +88,18 @@ public class newGUI extends JFrame {
         mnFi.add(separator);
         
         JMenuItem mntmNewMenuItem = new JMenuItem("Open Message");
-        mntmNewMenuItem.addMouseListener(new MouseAdapter() {
+        mntmNewMenuItem.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 openMessage();
             }
         });
         mnFi.add(mntmNewMenuItem);
         
         JMenuItem mntmSaveMessage = new JMenuItem("Save Message");
-        mntmSaveMessage.addMouseListener(new MouseAdapter() {
+        mntmSaveMessage.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 saveMessage();
             }
         });
@@ -115,9 +109,9 @@ public class newGUI extends JFrame {
         menuBar.add(mnHelp);
         
         JMenuItem mntmAbout = new JMenuItem("About");
-        mntmAbout.addMouseListener(new MouseAdapter() {
+        mntmAbout.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                  new aboutPage().setVisible(true);
             }
         });
@@ -127,9 +121,9 @@ public class newGUI extends JFrame {
         menuBar.add(mnKeys);
         
         JMenuItem mntmGenerateKeys = new JMenuItem("Generate Keys");
-        mntmGenerateKeys.addMouseListener(new MouseAdapter() {
+        mntmGenerateKeys.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 generateKeys();
             }
         });
@@ -159,18 +153,18 @@ public class newGUI extends JFrame {
         menuBar.add(mnMessage);
         
         JMenuItem mntmSignMessage = new JMenuItem("Sign Message");
-        mntmSignMessage.addMouseListener(new MouseAdapter() {
+        mntmSignMessage.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 signMessage();
             }
         });
         mnMessage.add(mntmSignMessage);
         
         JMenuItem mntmCheckSignature = new JMenuItem("Check Signature");
-        mntmCheckSignature.addMouseListener(new MouseAdapter() {
+        mntmCheckSignature.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 checkSignature();
             }
         });
@@ -180,9 +174,9 @@ public class newGUI extends JFrame {
         mnMessage.add(separator_1);
         
         JMenuItem mntmClearMessage = new JMenuItem("Clear Message");
-        mntmClearMessage.addMouseListener(new MouseAdapter() {
+        mntmClearMessage.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 clearMessage();
             }
         });
@@ -240,18 +234,18 @@ public class newGUI extends JFrame {
         LeftPanel.add(MessageButtonsPanel);
         
         JButton btnEncrypt = new JButton("Encrypt");
-        btnEncrypt.addMouseListener(new MouseAdapter() {
+        btnEncrypt.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 encryptMessage();
             }
         });
         MessageButtonsPanel.add(btnEncrypt);
         
         JButton btnDecrypt = new JButton("Decrypt");
-        btnDecrypt.addMouseListener(new MouseAdapter() {
+        btnDecrypt.addActionListener(new ActionListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 decryptMessage();
             }
         });
@@ -617,7 +611,7 @@ public class newGUI extends JFrame {
     private void checkSignature() {
         try { 
             if(message.checkSignature()){
-                JOptionPane.showMessageDialog(null, "Signature verified. Message came from:\n" + message.getSignee().toString(RADIX), "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "<html><body><p>Signature verified. Message came from:<br/><br/></p><p style='width: 300px;'>" + message.getSignee().toString(RADIX) + "</p></body></html>", "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Signature could not be verified.", "Warning", JOptionPane.WARNING_MESSAGE);
             }
