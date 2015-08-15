@@ -10,9 +10,7 @@ import java.awt.Dimension;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import RSA.encryptor.Message.MessageEncryptedException;
-import RSA.encryptor.Message.MessageNotEncryptedException;
-import RSA.encryptor.Message.MessageNotSignedException;
+import RSA.encryptor.Message.*;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -377,6 +375,9 @@ public class newGUI extends JFrame {
         try {
             message.setMessage(this.MessageTextArea.getText());
             BigInteger key = this.getRecipientKey();
+            BigInteger pubKey = this.getPublicKey();
+            BigInteger privKey = this.getPrivateKey();
+            message.sign(pubKey, privKey);
             message.Encrypt(key);
             this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
             displayMessage();
@@ -391,19 +392,19 @@ public class newGUI extends JFrame {
      * Decrypts the message
      */
     private void decryptMessage() {
-    
         try{
             BigInteger pubKey = this.getPublicKey();
             BigInteger privKey = this.getPrivateKey();
             message.Decrypt(pubKey, privKey);
+            this.checkSignature();
             displayMessage();
         } catch (MessageNotEncryptedException ex) {
             JOptionPane.showMessageDialog(null, "The message is not encrypted.","Error", JOptionPane.ERROR_MESSAGE);
-
         } catch (java.lang.NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "You need to enter a public and private keypair to decrypt.","Error", JOptionPane.ERROR_MESSAGE);
+        } catch (WrongKeyPairException ex) {
+            JOptionPane.showMessageDialog(null, "Failed to decrypt. The keypair used to decrypt does not match the public key used to encrypt.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
     }
     
     /**
@@ -613,12 +614,12 @@ public class newGUI extends JFrame {
             if(message.checkSignature()){
                 JOptionPane.showMessageDialog(null, "<html><body><p>Signature verified. Message came from:<br/><br/></p><p style='width: 300px;'>" + message.getSignee().toString(RADIX) + "</p></body></html>", "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Signature could not be verified.", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Signature could not be verified. This means the message was likely modified in transit or forged.", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         } catch (MessageEncryptedException ex) {
             JOptionPane.showMessageDialog(null, "You must decrypt the message before you can check the signature.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (MessageNotSignedException ex) {
-            JOptionPane.showMessageDialog(null, "The message was not signed.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "The message was not signed, so we cannot validate the identity of the sender.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     

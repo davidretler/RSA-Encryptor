@@ -51,6 +51,11 @@ public class Message implements java.io.Serializable {
      * Thrown if user tries to decrypt a non-encrypted message
      */
     public class MessageNotEncryptedException extends java.lang.Exception {};
+    /**
+     * Throw if the public key used to decrypt does not match that of the recipient
+     */
+    public class WrongKeyPairException extends java.lang.Exception {};
+    
     
     static Alphabet myAlphabet = new Alphabet(); //static definition of the alphabet
     
@@ -61,6 +66,7 @@ public class Message implements java.io.Serializable {
     private Boolean signed = false; //whether the message has been signed
     private BigInteger signature;   //the signature
     private BigInteger signee;      //public key of the signee
+    private BigInteger recipient;   //public key of the recipient
     
     /**
      * New blank message
@@ -143,6 +149,7 @@ public class Message implements java.io.Serializable {
     public void Encrypt(BigInteger pq) {
         this.messageInt = RSA.encrypt(this.messageInt, pq);
         this.messageText = "Secret";
+        this.recipient = pq;
         this.encrypted = true;
     }
     
@@ -151,9 +158,11 @@ public class Message implements java.io.Serializable {
      * @param pq - Public key
      * @param d - Private key
      * @throws MessageNotEncryptedException 
+     * @throws WrongKeyPairException
      */
-    public void Decrypt(BigInteger pq, BigInteger d) throws MessageNotEncryptedException {
+    public void Decrypt(BigInteger pq, BigInteger d) throws MessageNotEncryptedException, WrongKeyPairException {
         if(!this.encrypted) throw new MessageNotEncryptedException();
+        if(!this.recipient.equals(pq)) throw new WrongKeyPairException();
         this.messageInt = RSA.decrypt(this.messageInt, d, pq);
         this.messageText = Message.InttoStr(this.messageInt);
         this.encrypted = false;
