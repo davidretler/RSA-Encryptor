@@ -33,6 +33,10 @@ Message decrypted:
 
 ![Decrypted](Screenshots/Decrypted.png)
 
+Signature verifcation:
+
+![Signed](Screenshots/Signed.png)
+
 ##Changelog
 Check out the changelog [here](CHANGELOG.md)
 
