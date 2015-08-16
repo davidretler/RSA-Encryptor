@@ -33,6 +33,11 @@ import java.awt.event.ActionEvent;
 
 public class newGUI extends JFrame {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2903463257955590394L;
+
     private class NoKeySizeSelectedException extends Exception {};
     
     private final int RADIX = Character.MAX_RADIX;
@@ -630,6 +635,7 @@ public class newGUI extends JFrame {
         message = new Message();
         this.MessageTextArea.setText("");
         this.EncodedMessageTextArea.setText("");
+        this.MessageTextArea.setEditable(true);
     }
     
     /**

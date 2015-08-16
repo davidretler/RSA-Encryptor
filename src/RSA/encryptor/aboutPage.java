@@ -12,6 +12,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.Color;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -37,6 +40,7 @@ public class aboutPage extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setBorder(null);
         jTextArea1 = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -50,12 +54,12 @@ public class aboutPage extends javax.swing.JFrame {
         jLabel1.setText("RSA Encryptor");
 
         jTextArea1.setEditable(false);
-        jTextArea1.setBackground(java.awt.SystemColor.menu);
+        jTextArea1.setBackground(UIManager.getColor("OptionPane.background"));
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextArea1.setRows(5);
         jTextArea1.setText("By:\nChristopher Etler\nDavid Etler\n\nWith Thanks to Professor Michael Pezzimenti\n\n\nThis software is provided AS IS with no warranties and is\ndesigned for educational purposes only.");
-        jTextArea1.setBorder(null);
+        jTextArea1.setBorder(new EmptyBorder(0, 10, 0, 0));
         jScrollPane1.setViewportView(jTextArea1);
 
         jLabel2.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
@@ -155,7 +159,7 @@ public class aboutPage extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+       /* try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -171,7 +175,7 @@ public class aboutPage extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(aboutPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        //</editor-fold>*/
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

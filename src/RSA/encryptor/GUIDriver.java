@@ -21,6 +21,7 @@ public class GUIDriver {
         
         //center UI and make visible
         gui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        gui.setResizable(false);
         gui.pack();
         gui.setLocationRelativeTo(null);
         gui.setVisible(true);

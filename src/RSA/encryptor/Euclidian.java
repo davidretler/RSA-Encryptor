@@ -21,7 +21,6 @@ package RSA.encryptor;
 
 import java.lang.Math;
 import java.math.BigInteger;
-//import java.util.Scanner;
 
 /**
  * Implements the Euclidian algorithm for finding the greatest common
@@ -80,7 +79,7 @@ public final class Euclidian {
      * @return Array of numbers {a, s, t} where a is the GCD of A and B and s is
      * the inverse of A mod B is a==1
      */
-    public static long[] extendedEuclidan(long A, long B) {
+    public static long[] extendedEuclidian(long A, long B) {
         long a = A;
         long b = B;
         long s = 1;
@@ -119,7 +118,7 @@ public final class Euclidian {
      * @return Array of numbers {a, s, t} where a is the GCD of A and B and s is
      * the inverse of A mod B is a==1
      */
-    public static BigInteger[] extendedEuclidan(BigInteger A, BigInteger B) {
+    public static BigInteger[] extendedEuclidian(BigInteger A, BigInteger B) {
         BigInteger a = A;
         BigInteger b = B;
         BigInteger s = BigInteger.valueOf(1);
