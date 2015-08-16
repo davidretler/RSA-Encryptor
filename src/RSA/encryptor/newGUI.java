@@ -48,7 +48,7 @@ public class newGUI extends JFrame {
     
     private final ButtonGroup KeySizeButtonGroup = new ButtonGroup();
     private JTextArea MessageTextArea;
-    private JTextArea EncodedMessageTextArea;
+    private JTextArea SenderKeyArea;
     private JTextArea PublicKeyTextArea;
     private JTextArea PrivateKeyTextArea;
     private JTextArea RecipientKeyTextArea;
@@ -255,39 +255,40 @@ public class newGUI extends JFrame {
         });
         MessageButtonsPanel.add(btnDecrypt);
         
-        JPanel EncodedPanel = new JPanel();
-        EncodedPanel.setBounds(0, 192, 334, 159);
-        EncodedPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-        EncodedPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        EncodedPanel.setAlignmentY(Component.TOP_ALIGNMENT);
-        LeftPanel.add(EncodedPanel);
-        EncodedPanel.setLayout(null);
+        JPanel SenderKeyPanelContainer = new JPanel();
+        SenderKeyPanelContainer.setBounds(0, 192, 334, 159);
+        SenderKeyPanelContainer.setBorder(new EmptyBorder(0, 0, 0, 0));
+        SenderKeyPanelContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
+        SenderKeyPanelContainer.setAlignmentY(Component.TOP_ALIGNMENT);
+        LeftPanel.add(SenderKeyPanelContainer);
+        SenderKeyPanelContainer.setLayout(null);
         
-        JPanel EncodedMessagePanel = new JPanel();
-        EncodedMessagePanel.setBounds(12, 0, 336, 25);
-        FlowLayout flowLayout = (FlowLayout) EncodedMessagePanel.getLayout();
-        flowLayout.setAlignment(FlowLayout.LEFT);
-        EncodedPanel.add(EncodedMessagePanel);
+        JPanel SenderKeyPanel = new JPanel();
+        SenderKeyPanel.setBounds(12, 0, 336, 25);
+        FlowLayout fl_SenderKeyPanel = (FlowLayout) SenderKeyPanel.getLayout();
+        fl_SenderKeyPanel.setAlignment(FlowLayout.LEFT);
+        SenderKeyPanelContainer.add(SenderKeyPanel);
         
-        JLabel EncodedMessageLabel = new JLabel("Encoded Message");
-        EncodedMessageLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-        EncodedMessageLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        EncodedMessagePanel.add(EncodedMessageLabel);
+        JLabel SenderKeyLabel = new JLabel("Sender Public Key");
+        SenderKeyLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+        SenderKeyLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        SenderKeyPanel.add(SenderKeyLabel);
         
-        JPanel EncodedMessageTextPanel = new JPanel();
-        EncodedMessageTextPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
-        EncodedMessageTextPanel.setBounds(0, 25, 334, 122);
-        EncodedPanel.add(EncodedMessageTextPanel);
-        EncodedMessageTextPanel.setLayout(new BoxLayout(EncodedMessageTextPanel, BoxLayout.X_AXIS));
+        JPanel SenderKeyTextPanel = new JPanel();
+        SenderKeyTextPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+        SenderKeyTextPanel.setBounds(0, 25, 334, 122);
+        SenderKeyPanelContainer.add(SenderKeyTextPanel);
+        SenderKeyTextPanel.setLayout(new BoxLayout(SenderKeyTextPanel, BoxLayout.X_AXIS));
         
-        JScrollPane EncodedMessageTextScrollPane = new JScrollPane();
-        EncodedMessageTextScrollPane.setBorder(new LineBorder(new Color(0, 0, 0)));
-        EncodedMessageTextPanel.add(EncodedMessageTextScrollPane);
+        JScrollPane SenderKeyTextScrollPane = new JScrollPane();
+        SenderKeyTextScrollPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+        SenderKeyTextPanel.add(SenderKeyTextScrollPane);
         
-        EncodedMessageTextArea = new JTextArea();
-        EncodedMessageTextArea.setLineWrap(true);
-        EncodedMessageTextArea.setBorder(new EmptyBorder(0, 0, 0, 0));
-        EncodedMessageTextScrollPane.setViewportView(EncodedMessageTextArea);
+        SenderKeyArea = new JTextArea();
+        SenderKeyArea.setEditable(false);
+        SenderKeyArea.setLineWrap(true);
+        SenderKeyArea.setBorder(new EmptyBorder(0, 0, 0, 0));
+        SenderKeyTextScrollPane.setViewportView(SenderKeyArea);
         
         JPanel RightPanel = new JPanel();
         MainPanel.add(RightPanel);
@@ -386,7 +387,6 @@ public class newGUI extends JFrame {
             BigInteger privKey = this.getPrivateKey();
             message.sign(pubKey, privKey);
             message.Encrypt(key);
-            this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
             displayMessage();
         } catch (MessageEncryptedException ex) {
             JOptionPane.showMessageDialog(null, "This message is already encrypted.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -410,7 +410,7 @@ public class newGUI extends JFrame {
         } catch (java.lang.NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "You need to enter a public and private keypair to decrypt.","Error", JOptionPane.ERROR_MESSAGE);
         } catch (WrongKeyPairException ex) {
-            JOptionPane.showMessageDialog(null, "Failed to decrypt. The keypair used to decrypt does not match the public key used to encrypt.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Failed to decrypt. The keypair used to decrypt does not match the public key of the intended recipient.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -583,16 +583,16 @@ public class newGUI extends JFrame {
         try {
             this.MessageTextArea.setText(message.getMessage());
             //only display encoded text if message is not blank; otherwise keep encoded text blank as well
-            if(!message.getMessage().equals("")) {
-                this.EncodedMessageTextArea.setText("");
+            if(message.getSender().equals(BigInteger.valueOf(0))) {
+                this.SenderKeyArea.setText("");
             } else {
-                this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
+                this.SenderKeyArea.setText(message.getSender().toString(RADIX));
             }
             this.MessageTextArea.setEditable(true);
         } catch (MessageEncryptedException ex) {
             this.MessageTextArea.setText("Message Encrypted");
             this.MessageTextArea.setEditable(false);
-            this.EncodedMessageTextArea.setText(message.toInt().toString(RADIX));
+            this.SenderKeyArea.setText(message.getSender().toString(RADIX));
         }
     }
    
@@ -619,7 +619,7 @@ public class newGUI extends JFrame {
     private void checkSignature() {
         try { 
             if(message.checkSignature()){
-                JOptionPane.showMessageDialog(null, "<html><body><p>Signature verified. Message came from:<br/><br/></p><p style='width: 300px;'>" + message.getSignee().toString(RADIX) + "</p></body></html>", "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "<html><body><p>Signature verified. Message came from:<br/><br/></p><p style='width: 300px;'>" + message.getSender().toString(RADIX) + "</p></body></html>", "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Signature could not be verified. This means the message was likely modified in transit or forged.", "Warning", JOptionPane.WARNING_MESSAGE);
             }
@@ -636,7 +636,7 @@ public class newGUI extends JFrame {
     private void clearMessage() {
         message = new Message();
         this.MessageTextArea.setText("");
-        this.EncodedMessageTextArea.setText("");
+        this.SenderKeyArea.setText("");
         this.MessageTextArea.setEditable(true);
     }
     

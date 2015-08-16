@@ -65,7 +65,7 @@ public class Message implements java.io.Serializable {
     private BigInteger messageHash; //the hash of the method
     private Boolean signed = false; //whether the message has been signed
     private BigInteger signature;   //the signature
-    private BigInteger signee;      //public key of the signee
+    private BigInteger sender;      //public key of the signee
     private BigInteger recipient;   //public key of the recipient
     
     /**
@@ -304,7 +304,7 @@ public class Message implements java.io.Serializable {
             BigInteger signedHash = RSA.encrypt(this.messageHash, privateKey, publicKey); 
             this.signed = true;
             this.signature = signedHash;
-            this.signee = publicKey;
+            this.sender = publicKey;
             
             System.out.println("Message signed! Hash: " + this.messageHash);
         } else {
@@ -324,8 +324,8 @@ public class Message implements java.io.Serializable {
         }
         if(!this.encrypted) {
             this.hash();
-            BigInteger allegedHash = RSA.decrypt(this.signature, RSA.e, this.signee);
-            if(this.messageHash.equals(allegedHash)) {
+            BigInteger allegedHash = RSA.decrypt(this.signature, RSA.e, this.sender);
+            if(this.messageHash.mod(sender).equals(allegedHash)) {
                 System.out.println("Hashes equal\nHash: " + this.messageHash + "\nSigned Hash: " + allegedHash);
                 return true;
             } else {
@@ -337,7 +337,11 @@ public class Message implements java.io.Serializable {
         }
     }
     
-    public BigInteger getSignee() {
-        return this.signee;
+    /**
+     * Get the public key of the person who sent the message
+     * @return - public key of sender
+     */
+    public BigInteger getSender() {
+        return this.sender;
     }
 }
