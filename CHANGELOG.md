@@ -21,3 +21,5 @@
     * Menu now works with Unity and other systems with global menubars
     * Public key of signee now wraps after 300px in the dialog box, rather than going offscreen
     * Further slimmed down code
+  * Version 2.3
+    * About page looks nicer

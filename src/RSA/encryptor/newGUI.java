@@ -114,7 +114,9 @@ public class newGUI extends JFrame {
         mntmAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                 new aboutPage().setVisible(true);
+                 aboutPage theAboutPage = new aboutPage();
+                 theAboutPage.setLocationRelativeTo(null);
+                 theAboutPage.setVisible(true);
             }
         });
         mnHelp.add(mntmAbout);
