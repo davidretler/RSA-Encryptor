@@ -619,7 +619,7 @@ public class newGUI extends JFrame {
     private void checkSignature() {
         try { 
             if(message.checkSignature()){
-                JOptionPane.showMessageDialog(null, "<html><body><p>Signature verified. Message came from:<br/><br/></p><p style='width: 300px;'>" + message.getSender().toString(RADIX) + "</p></body></html>", "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Signature was verified. The identity of the sender is displayed in the text area.", "Signature Confirmed", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Signature could not be verified. This means the message was likely modified in transit or forged.", "Warning", JOptionPane.WARNING_MESSAGE);
             }

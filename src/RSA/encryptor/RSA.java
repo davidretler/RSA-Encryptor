@@ -93,6 +93,11 @@ public final class RSA {
         BigInteger[] key = {p.multiply(q), decryptionKey(p, q)};
         return key;
     }
+    /**
+     * Generates a keypair given the number of bits
+     * @param bits
+     * @return
+     */
     public static BigInteger[] generateKey(int bits) {
         Random rand = new Random();
         BigInteger p = BigInteger.probablePrime(bits, rand);
